@@ -1,0 +1,284 @@
+/* ============================================
+   MODAL SYSTEM STYLES
+   ============================================ */
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s cubic-bezier(.175, .885, .32, 1.275),
+                visibility 0.5s cubic-bezier(.175, .885, .32, 1.275);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Modal Container */
+.modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.95);
+    min-width: 600px;
+    min-height: 400px;
+    max-width: 90vw;
+    max-height: 90vh;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s cubic-bezier(.175, .885, .32, 1.275);
+    border-radius: 10px;
+    overflow: visible;
+}
+
+.modal-container.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Modal Pattern Border - Uses ::before like card backs */
+.modal-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 10px;
+    pointer-events: none;
+    z-index: 0;
+    /* Pattern background will be applied via data-pattern attribute */
+}
+
+/* Modal Inner Background - Matches card back inner background */
+.modal-container::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    z-index: 1;
+}
+
+/* Modal Content - Above the backgrounds */
+.modal-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Modal Title */
+.modal-content h2 {
+    color: #333;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
+    padding: 0 0 1rem 0;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* Modal Links Grid */
+.modal-links {
+    display: grid;
+    gap: 1rem;
+    flex: 1;
+    align-content: start;
+}
+
+/* Column variations */
+.modal-columns-1 {
+    grid-template-columns: 1fr;
+}
+
+.modal-columns-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.modal-columns-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.modal-columns-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Modal Link Items - Match card back link items */
+.modal-link-item {
+    background: white;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+}
+
+.modal-link-item:hover {
+    background: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-link-item a {
+    color: #333;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: block;
+    width: 100%;
+}
+
+.modal-link-item a:hover {
+    color: #0066cc;
+}
+
+/* Apply pattern styles to modal using data-pattern attribute */
+/* Slate pattern for WORKSPACE/Google Sheets modal */
+[data-pattern="slate"].modal-container::before {
+    background-color: #181f29;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%236e85b1' fill-opacity='0.4'%3E%3Cpath d='M0 0h80v80H0V0zm20 20v40h40V20H20zm20 35a15 15 0 1 1 0-30 15 15 0 0 1 0 30z' /%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: 80px 80px;
+}
+
+/* Add support for other patterns if needed */
+[data-pattern="sky"].modal-container::before {
+    background-color: #024a70;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: 5px 5px;
+}
+
+[data-pattern="pink"].modal-container::before {
+    background-color: #8b0836;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: 5px 5px;
+}
+
+[data-pattern="purple"].modal-container::before {
+    background-color: #581968;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='199' viewBox='0 0 100 199'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath d='M0 199V0h1v1.99L100 199h-1.12L1 4.22V199H0zM100 2h-.12l-1-2H100v2z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: 100px 200px;
+}
+
+/* Box Shadow for modal elevation */
+.modal-container.active {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .modal-container {
+        min-width: auto;
+        width: 95vw;
+        max-height: 85vh;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+    }
+
+    /* Force 2 columns max on mobile */
+    .modal-columns-3,
+    .modal-columns-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-container {
+        min-height: 300px;
+    }
+
+    /* Force single column on small mobile */
+    .modal-columns-2,
+    .modal-columns-3,
+    .modal-columns-4 {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        padding: 1rem;
+    }
+
+    .modal-link-item {
+        padding: 0.6rem 0.8rem;
+    }
+}
+
+/* Prevent scrolling when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Animation performance optimization */
+.modal-overlay,
+.modal-container {
+    will-change: opacity, transform, visibility;
+}
+
+/* Ensure modal stays on top of settings panel */
+.modal-overlay {
+    z-index: 9999 !important;
+}
+
+.modal-container {
+    z-index: 10000 !important;
+}
+
+/* Debug helper - remove in production */
+.modal-container[data-pattern] {
+    /* Ensures pattern is visible */
+    position: fixed;
+}
+
+/* ============================================
+   CARD LOCK STYLES (Option 1)
+   ============================================ */
+
+/* Lock the card in flipped state when modal is open */
+.flip.modal-open-lock > .front {
+    transform: rotateY(180deg) !important;
+}
+
+.flip.modal-open-lock > .back {
+    opacity: 1 !important;
+    transform: rotateY(0deg) !important;
+}
+
+/* Prevent hover effects while locked */
+.flip.modal-open-lock:hover > .front {
+    transform: rotateY(180deg) !important;
+}
+
+.flip.modal-open-lock:hover > .back {
+    opacity: 1 !important;
+    transform: rotateY(0deg) !important;
+}

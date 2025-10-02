@@ -1,0 +1,23 @@
+{
+  "name": "chrome_ext_new_tab_flip",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test_modal_system.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/professionalcrastinationco/misc.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/professionalcrastinationco/misc/issues"
+  },
+  "homepage": "https://github.com/professionalcrastinationco/misc#readme",
+  "dependencies": {
+    "playwright": "^1.55.1"
+  }
+}

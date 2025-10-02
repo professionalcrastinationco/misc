@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal System Test - Manual Testing Guide</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 40px;
+            background: #f3f4f6;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+        .test-section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        .test-section h2 {
+            color: #1f2937;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .option-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .test-steps {
+            margin-top: 20px;
+        }
+        .test-steps ol {
+            margin: 0;
+            padding-left: 25px;
+        }
+        .test-steps li {
+            margin-bottom: 12px;
+            color: #4b5563;
+        }
+        .expected {
+            background: #ecfdf5;
+            border: 1px solid #10b981;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+        .expected h3 {
+            color: #059669;
+            margin-top: 0;
+            font-size: 1rem;
+        }
+        .expected ul {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+        }
+        .test-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #3b82f6;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+        .test-button:hover {
+            background: #2563eb;
+        }
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .status.implemented {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        .divider {
+            height: 1px;
+            background: #e5e7eb;
+            margin: 40px 0;
+        }
+        .checklist {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 30px;
+        }
+        .checklist h3 {
+            color: #92400e;
+            margin-top: 0;
+        }
+        .checklist ul {
+            margin: 10px 0 0 0;
+            padding-left: 20px;
+        }
+        .checklist li {
+            margin-bottom: 8px;
+            color: #78350f;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Modal System Manual Testing Guide</h1>
+        <p class="subtitle">Test the three different modal interaction patterns implemented for the flip card system</p>
+
+        <!-- Option 1 -->
+        <div class="test-section">
+            <h2>
+                <span class="option-badge">Option 1</span>
+                Lock Card While Modal Open
+            </h2>
+            <p><strong>Target:</strong> Google Sheets bookmark (WORKSPACE card)</p>
+            <p><strong>Implementation:</strong> Card stays locked in flipped state while modal is open</p>
+
+            <div class="test-steps">
+                <h3>Test Steps:</h3>
+                <ol>
+                    <li>Hover over the WORKSPACE card to flip it</li>
+                    <li>Hover over the "📊 Google Sheets" link</li>
+                    <li>Observe that a modal appears</li>
+                    <li>Move your mouse away from the Google Sheets link</li>
+                    <li>Notice the card remains flipped (locked)</li>
+                    <li>Move mouse to the modal - it should stay open</li>
+                    <li>Move mouse away from modal - it should close after 300ms</li>
+                    <li>Verify card unlocks and can flip back after modal closes</li>
+                </ol>
+            </div>
+
+            <div class="expected">
+                <h3>✅ Expected Behavior:</h3>
+                <ul>
+                    <li>Card remains flipped while modal is open</li>
+                    <li>Card cannot flip back until modal closes</li>
+                    <li>Modal has slate pattern border</li>
+                    <li>Modal closes with 300ms delay when mouse leaves</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Option 2 -->
+        <div class="test-section">
+            <h2>
+                <span class="option-badge">Option 2</span>
+                Independent Modal
+            </h2>
+            <p><strong>Target:</strong> Google Drive bookmark (WORKSPACE card)</p>
+            <p><strong>Implementation:</strong> Modal operates independently of card state</p>
+
+            <div class="test-steps">
+                <h3>Test Steps:</h3>
+                <ol>
+                    <li>Hover over the WORKSPACE card to flip it</li>
+                    <li>Hover over the "💾 Google Drive" link</li>
+                    <li>Observe that a modal appears</li>
+                    <li>Move your mouse away from the Google Drive link</li>
+                    <li>Notice the card flips back naturally</li>
+                    <li>But the modal remains open</li>
+                    <li>Move mouse to the modal - it should stay open</li>
+                    <li>Move mouse away from modal - it should close after 300ms</li>
+                </ol>
+            </div>
+
+            <div class="expected">
+                <h3>✅ Expected Behavior:</h3>
+                <ul>
+                    <li>Card can flip back while modal is still open</li>
+                    <li>Modal stays open based on its own hover state</li>
+                    <li>Modal has slate pattern border</li>
+                    <li>Modal only closes when mouse leaves the modal itself</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Option 3 -->
+        <div class="test-section">
+            <h2>
+                <span class="option-badge">Option 3</span>
+                Click to Open
+            </h2>
+            <p><strong>Target:</strong> GitHub bookmark (DEVELOPMENT card)</p>
+            <p><strong>Implementation:</strong> Click to open, no hover interaction</p>
+
+            <div class="test-steps">
+                <h3>Test Steps:</h3>
+                <ol>
+                    <li>Hover over the DEVELOPMENT card to flip it</li>
+                    <li>Hover over the "🐙 GitHub" link - nothing should happen</li>
+                    <li>Click on the "🐙 GitHub" link</li>
+                    <li>Observe that a modal appears</li>
+                    <li>Move your mouse anywhere - modal should stay open</li>
+                    <li>Click on the dark overlay to close the modal</li>
+                    <li>Alternatively, press ESC key to close the modal</li>
+                </ol>
+            </div>
+
+            <div class="expected">
+                <h3>✅ Expected Behavior:</h3>
+                <ul>
+                    <li>No modal on hover - only on click</li>
+                    <li>Modal stays open regardless of mouse position</li>
+                    <li>Modal has pink pattern border (matching DEVELOPMENT card)</li>
+                    <li>Modal only closes via overlay click or ESC key</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- General Testing Checklist -->
+        <div class="checklist">
+            <h3>📋 General Testing Checklist</h3>
+            <ul>
+                <li>✓ All three modals should close if you open a different modal</li>
+                <li>✓ ESC key should close any open modal</li>
+                <li>✓ Clicking the overlay should close any open modal</li>
+                <li>✓ Each modal should have the correct pattern matching its parent card</li>
+                <li>✓ Modal links should be clickable (placeholder # for now)</li>
+                <li>✓ Animations should be smooth (0.5s cubic-bezier)</li>
+                <li>✓ "Show All Card Backs" toggle should not break modal functionality</li>
+                <li>✓ Z-index layering should be correct (modal above everything)</li>
+            </ul>
+        </div>
+
+        <a href="flip/index_modal.html" class="test-button" target="_blank">Open Test Page →</a>
+
+        <div class="divider"></div>
+
+        <p style="color: #6b7280; font-size: 0.9rem;">
+            <strong>Note:</strong> After testing all three patterns, you can decide which UX feels best and implement it across all modals, or keep different patterns for different use cases.
+        </p>
+    </div>
+</body>
+</html>
