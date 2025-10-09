@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip Cards - Enhanced Editor V2</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/styles-cards-patterns-002.css">
+    <link rel="stylesheet" href="assets/css/styles-modal.css">
+    <link rel="stylesheet" href="assets/css/styles-editor-modal-v2.css">
+</head>
+<body>
+
+<h4 class="text-shadow">Quick Links Dashboard</h4>
+
+<!-- Search Container -->
+<div class="search-container">
+    <input
+        type="text"
+        id="bookmarkSearch"
+        placeholder="Search bookmarks and tags..."
+        autocomplete="off"
+    />
+    <button id="clearSearch" class="clear-search" style="display: none;">✕</button>
+</div>
+
+<!-- Search Results Modal -->
+<div class="search-modal-overlay" id="searchModalOverlay"></div>
+<div class="search-modal-container" id="searchModalContainer">
+    <div class="search-modal-content">
+        <div class="search-modal-header">
+            <h3>Search Results</h3>
+            <button class="search-modal-close" id="searchModalClose">✕</button>
+        </div>
+        <div class="search-modal-results" id="searchModalResults">
+            <!-- Results will be dynamically inserted here -->
+        </div>
+    </div>
+</div>
+
+<div class="flip-container">
+    <!-- Cards will be dynamically loaded from bookmarks.json -->
+</div>
+
+<!-- Hamburger Settings Menu -->
+<div class="hamburger-menu" id="hamburgerMenu">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+<!-- Settings Panel -->
+<div class="settings-panel" id="settingsPanel">
+    <div class="settings-header">
+        <h3>Settings</h3>
+    </div>
+    <div class="settings-content">
+        <div class="setting-item">
+            <label class="toggle-switch">
+                <input type="checkbox" id="flipAllToggle">
+                <span class="toggle-slider">
+                    <span class="toggle-label">Show All Card Backs</span>
+                </span>
+            </label>
+        </div>
+        <div class="setting-item">
+            <label class="toggle-switch">
+                <input type="checkbox" id="showCardNamesToggle" checked>
+                <span class="toggle-slider">
+                    <span class="toggle-label">Show Card Names in Search</span>
+                </span>
+            </label>
+        </div>
+        <div class="setting-item">
+            <label class="toggle-switch">
+                <input type="checkbox" id="clearOnClickToggle">
+                <span class="toggle-slider">
+                    <span class="toggle-label">Clear Search on Click</span>
+                </span>
+            </label>
+        </div>
+        <div class="setting-item">
+            <button id="addCardBtn" class="btn-add-card">+ Add Card</button>
+        </div>
+    </div>
+</div>
+
+<!-- Settings Overlay -->
+<div class="settings-overlay" id="settingsOverlay"></div>
+
+<!-- Modal Overlay -->
+<div class="modal-overlay" id="modalOverlay"></div>
+
+<!-- Modal Container -->
+<div class="modal-container" id="modalContainer">
+    <div class="modal-content" id="modalContent">
+        <!-- Dynamic content will be inserted here -->
+    </div>
+</div>
+
+<!-- Editor Modal Overlay -->
+<div class="editor-modal-overlay-v2" id="editorModalOverlay"></div>
+
+<!-- Editor Modal Container V2 -->
+<div class="editor-modal-container-v2" id="editorModalContainer">
+    <div class="editor-modal-content-v2" id="editorModalContent">
+        <!-- Editor content will be dynamically inserted here -->
+    </div>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/editor-integration-v2.js"></script>
+
+</body>
+</html>

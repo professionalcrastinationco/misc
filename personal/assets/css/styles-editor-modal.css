@@ -1,0 +1,595 @@
+/* ==================== EDITOR MODAL STYLES ==================== */
+
+/* Editor Modal Overlay */
+.editor-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.3s ease;
+}
+
+.editor-modal-overlay.active {
+    display: flex;
+}
+
+/* Editor Modal Container */
+.editor-modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    max-width: 800px;
+    width: 90%;
+    max-height: 85vh;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    display: none;
+    flex-direction: column;
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.editor-modal-container.active {
+    display: flex;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Editor Modal Content */
+.editor-modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Editor Modal Header */
+.editor-modal-header {
+    padding: 24px;
+    border-radius: 16px 16px 0 0;
+    color: white;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.editor-modal-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.editor-modal-header p {
+    font-size: 14px;
+    opacity: 0.95;
+    margin: 0;
+}
+
+.editor-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    backdrop-filter: blur(4px);
+}
+
+.editor-modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* Pattern-aware header backgrounds */
+.editor-modal-header[data-pattern="sky"] {
+    background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+}
+
+.editor-modal-header[data-pattern="pink"] {
+    background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+}
+
+.editor-modal-header[data-pattern="purple"] {
+    background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%);
+}
+
+.editor-modal-header[data-pattern="indigo"] {
+    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+}
+
+.editor-modal-header[data-pattern="green"] {
+    background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+}
+
+.editor-modal-header[data-pattern="slate"] {
+    background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
+}
+
+.editor-modal-header[data-pattern="orange"] {
+    background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+}
+
+.editor-modal-header[data-pattern="zinc"] {
+    background: linear-gradient(135deg, #71717a 0%, #a1a1aa 100%);
+}
+
+.editor-modal-header[data-pattern="brown"] {
+    background: linear-gradient(135deg, #92400e 0%, #b45309 100%);
+}
+
+/* Error Summary in Modal */
+.editor-error-summary {
+    background: #fee;
+    border: 2px solid #dc2626;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+}
+
+.editor-error-summary-header {
+    color: #dc2626;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.editor-error-summary ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.editor-error-summary li {
+    color: #991b1b;
+    padding: 3px 0;
+    font-size: 13px;
+}
+
+/* Scrollable Body */
+.editor-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    background: #f9fafb;
+}
+
+.editor-modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.editor-modal-body::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.editor-modal-body::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.editor-modal-body::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Form Sections */
+.editor-section {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 2px solid #e5e7eb;
+}
+
+.editor-section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+/* Form Groups */
+.editor-form-group {
+    margin-bottom: 16px;
+}
+
+.editor-form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    font-size: 13px;
+    color: #374151;
+}
+
+.editor-form-group input[type="text"],
+.editor-form-group input[type="number"],
+.editor-form-group select,
+.editor-form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #e5e5e5;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    transition: border-color 0.2s;
+}
+
+.editor-form-group input:focus,
+.editor-form-group select:focus,
+.editor-form-group textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.editor-form-group input.error,
+.editor-form-group select.error,
+.editor-form-group textarea.error {
+    border-color: #dc2626;
+}
+
+.editor-form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.editor-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.editor-form-row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+/* Checkbox */
+.editor-checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.editor-checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* Bookmarks Container */
+.editor-bookmarks-container {
+    margin-top: 12px;
+}
+
+.editor-bookmark {
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 12px;
+    position: relative;
+}
+
+.editor-bookmark.has-error {
+    border-color: #dc2626;
+}
+
+.editor-bookmark-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.editor-bookmark-label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #1f2937;
+}
+
+.editor-bookmark-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Sub-bookmarks */
+.editor-sub-bookmarks-container {
+    margin-top: 16px;
+    margin-left: 16px;
+    padding-left: 16px;
+    border-left: 3px solid #cbd5e1;
+}
+
+.editor-sub-bookmark {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.editor-sub-bookmark.has-error {
+    border-color: #dc2626;
+}
+
+/* Tags */
+.editor-tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.editor-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.editor-tag-remove {
+    background: none;
+    border: none;
+    color: #3730a3;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.editor-tag-remove:hover {
+    color: #1e1b4b;
+}
+
+.editor-tag-input {
+    flex: 1;
+    min-width: 150px;
+    padding: 6px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+/* Buttons */
+.editor-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.editor-btn-primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.editor-btn-primary:hover {
+    background: #2563eb;
+}
+
+.editor-btn-primary:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.editor-btn-secondary {
+    background: #f3f4f6;
+    color: #1f2937;
+    border: 1px solid #d1d5db;
+}
+
+.editor-btn-secondary:hover {
+    background: #e5e7eb;
+}
+
+.editor-btn-danger {
+    background: #ef4444;
+    color: white;
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.editor-btn-danger:hover {
+    background: #dc2626;
+}
+
+.editor-btn-duplicate {
+    background: #8b5cf6;
+    color: white;
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.editor-btn-duplicate:hover {
+    background: #7c3aed;
+}
+
+.editor-add-item-btn {
+    background: #f3f4f6;
+    color: #374151;
+    border: 2px dashed #d1d5db;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 12px;
+    transition: all 0.2s;
+}
+
+.editor-add-item-btn:hover {
+    background: #e5e7eb;
+    border-color: #9ca3af;
+}
+
+/* Modal Footer */
+.editor-modal-footer {
+    padding: 20px 24px;
+    background: white;
+    border-top: 2px solid #e5e7eb;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+/* Gear Icon on Card */
+.card-edit-btn {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    z-index: 10;
+    backdrop-filter: blur(4px);
+}
+
+.card-edit-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* Add Card Button in Settings */
+.btn-add-card {
+    width: 100%;
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 8px;
+}
+
+.btn-add-card:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .editor-modal-container {
+        width: 100%;
+        max-width: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+        transform: translate(-50%, -50%);
+    }
+
+    .editor-modal-container.active {
+        transform: translate(-50%, -50%);
+    }
+
+    .editor-modal-header {
+        border-radius: 0;
+    }
+
+    .editor-form-row,
+    .editor-form-row-3 {
+        grid-template-columns: 1fr;
+    }
+
+    .editor-sub-bookmarks-container {
+        margin-left: 8px;
+        padding-left: 8px;
+    }
+
+    .editor-modal-footer {
+        flex-direction: column-reverse;
+    }
+
+    .editor-modal-footer .editor-btn {
+        width: 100%;
+    }
+
+    .card-edit-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+}
+
+/* Success Message */
+.editor-success-message {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: #10b981;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    display: none;
+    animation: slideInRight 0.3s ease;
+}
+
+.editor-success-message.active {
+    display: block;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}

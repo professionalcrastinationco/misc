@@ -1,0 +1,640 @@
+/* ============================================
+   MODAL SYSTEM STYLES
+   ============================================ */
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s cubic-bezier(.175, .885, .32, 1.275),
+                visibility 0.5s cubic-bezier(.175, .885, .32, 1.275);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Modal Container */
+.modal-container {
+    position: fixed;
+    /* Position will be set by JavaScript for smart positioning */
+    min-width: 600px;
+    min-height: 400px;
+    max-width: 90vw;
+    max-height: 90vh;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s cubic-bezier(.175, .885, .32, 1.275);
+    border-radius: 10px;
+    overflow: visible;
+}
+
+.modal-container.active {
+    opacity: 1;
+    visibility: visible;
+    /* Transform will be set by JavaScript for animation */
+}
+
+/* Modal Pattern Border - Uses ::before like card backs */
+.modal-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 10px;
+    pointer-events: none;
+    z-index: 0;
+    /* Pattern background will be applied via data-pattern attribute */
+}
+
+/* Modal Inner Background - Matches card back inner background */
+.modal-container::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    z-index: 1;
+}
+
+/* Modal Content - Above the backgrounds */
+.modal-content {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Modal Title */
+.modal-content h2 {
+    color: #333;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
+    padding: 0 0 1rem 0;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* Modal Links Grid */
+.modal-links {
+    display: grid;
+    gap: 1rem;
+    flex: 1;
+    align-content: start;
+}
+
+/* Column variations */
+.modal-columns-1 {
+    grid-template-columns: 1fr;
+}
+
+.modal-columns-2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.modal-columns-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.modal-columns-4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* Modal Link Items - Match card back link items */
+.modal-link-item {
+    background: white;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    transition: all 0.2s ease;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+}
+
+.modal-link-item:hover {
+    background: #f8fafc;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-link-item a {
+    color: #333;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: block;
+    width: 100%;
+}
+
+.modal-link-item a:hover {
+    color: #0066cc;
+}
+
+/* Apply pattern styles to modal using data-pattern attribute */
+/* Slate pattern for WORKSPACE/Google Sheets modal */
+[data-pattern="slate"].modal-container::before {
+    background-color: #181f29;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%236e85b1' fill-opacity='0.4'%3E%3Cpath d='M0 0h80v80H0V0zm20 20v40h40V20H20zm20 35a15 15 0 1 1 0-30 15 15 0 0 1 0 30z' /%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: 80px 80px;
+}
+
+/* Add support for other patterns if needed */
+[data-pattern="sky"].modal-container::before {
+    background-color: #024a70;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: 5px 5px;
+}
+
+[data-pattern="pink"].modal-container::before {
+    background-color: #8b0836;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%239C92AC' fill-opacity='0.4' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: 5px 5px;
+}
+
+[data-pattern="purple"].modal-container::before {
+    background-color: #581968;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='199' viewBox='0 0 100 199'%3E%3Cg fill='%239C92AC' fill-opacity='0.4'%3E%3Cpath d='M0 199V0h1v1.99L100 199h-1.12L1 4.22V199H0zM100 2h-.12l-1-2H100v2z'%3E%3C/path%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: 100px 200px;
+}
+
+/* Box Shadow for modal elevation */
+.modal-container.active {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .modal-container {
+        min-width: auto;
+        width: 95vw;
+        max-height: 85vh;
+        /* Force centered positioning on mobile */
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) scale(0.95) !important;
+    }
+
+    .modal-container.active {
+        transform: translate(-50%, -50%) scale(1) !important;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+    }
+
+    .modal-content h2 {
+        font-size: 1.5rem;
+    }
+
+    /* Force 2 columns max on mobile */
+    .modal-columns-3,
+    .modal-columns-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-container {
+        min-height: 300px;
+    }
+
+    /* Force single column on small mobile */
+    .modal-columns-2,
+    .modal-columns-3,
+    .modal-columns-4 {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        padding: 1rem;
+    }
+
+    .modal-link-item {
+        padding: 0.6rem 0.8rem;
+    }
+}
+
+/* Prevent scrolling when modal is open */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Animation performance optimization */
+.modal-overlay,
+.modal-container {
+    will-change: opacity, transform, visibility;
+}
+
+/* Ensure modal stays on top of settings panel */
+.modal-overlay {
+    z-index: 9999 !important;
+}
+
+.modal-container {
+    z-index: 10000 !important;
+}
+
+/* Debug helper - remove in production */
+.modal-container[data-pattern] {
+    /* Ensures pattern is visible */
+    position: fixed;
+}
+
+/* ============================================
+   CARD LOCK STYLES (Option 1)
+   ============================================ */
+
+/* Lock the card in flipped state when modal is open */
+.flip.modal-open-lock > .front {
+    transform: rotateY(180deg) !important;
+}
+
+.flip.modal-open-lock > .back {
+    opacity: 1 !important;
+    transform: rotateY(0deg) !important;
+}
+
+/* Prevent hover effects while locked */
+.flip.modal-open-lock:hover > .front {
+    transform: rotateY(180deg) !important;
+}
+
+.flip.modal-open-lock:hover > .back {
+    opacity: 1 !important;
+    transform: rotateY(0deg) !important;
+}
+
+/* ============================================
+   MODAL INDICATOR ICON STYLES
+   ============================================ */
+
+/* Modal indicator icon styling */
+.modal-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.modal-indicator:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #0066cc;
+    transform: translateY(1px);
+}
+
+.modal-indicator:active {
+    transform: translateY(2px);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   SEARCH MODAL STYLES
+   ============================================ */
+
+/* Search Modal Overlay */
+.search-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 10001;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.search-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Search Modal Container */
+.search-modal-container {
+    position: fixed;
+    top: 140px; /* Position below search input */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 800px;
+    max-height: 70vh;
+    z-index: 10002;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.search-modal-container.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Pattern Border for Search Modal */
+.search-modal-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 10px;
+    pointer-events: none;
+    z-index: 0;
+    /* Default pattern - can be changed via data-pattern */
+    background-color: #181f29;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%236e85b1' fill-opacity='0.4'%3E%3Cpath d='M0 0h80v80H0V0zm20 20v40h40V20H20zm20 35a15 15 0 1 1 0-30 15 15 0 0 1 0 30z' /%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-position: 0 0;
+    background-size: 80px 80px;
+}
+
+/* Inner Background */
+.search-modal-container::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    z-index: 1;
+}
+
+/* Search Modal Content */
+.search-modal-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Search Modal Header */
+.search-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem 1rem 2rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.search-modal-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.search-modal-close {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    line-height: 1;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.search-modal-close:hover {
+    background: #e2e8f0;
+    color: #475569;
+}
+
+/* Search Modal Results Container */
+.search-modal-results {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem 2rem;
+}
+
+/* Search Result Sections */
+.search-results-section {
+    margin-bottom: 2rem;
+}
+
+.search-results-section:last-child {
+    margin-bottom: 0;
+}
+
+.search-section-header {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+/* Search Result Item */
+.search-result-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.search-result-item:hover {
+    background: #f8fafc;
+    transform: translateX(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Result Icon */
+.search-result-icon {
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-result-icon img {
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
+}
+
+/* Result Info */
+.search-result-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.search-result-path {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.search-result-card-name {
+    color: #64748b;
+    font-weight: 400;
+}
+
+.search-result-separator {
+    color: #94a3b8;
+}
+
+.search-result-tags {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+}
+
+.search-result-tags .tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    color: #90a1b9;
+    font-weight: 500;
+    text-transform: lowercase;
+}
+
+/* Result Actions */
+.search-result-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.search-result-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    background: white;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.search-result-btn:hover {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #1e293b;
+}
+
+.search-result-btn-current {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.search-result-btn-current:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+/* Empty State */
+.search-empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #64748b;
+}
+
+.search-empty-state p {
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .search-modal-container {
+        top: 120px;
+        width: 95%;
+        max-height: 60vh;
+    }
+
+    .search-modal-header {
+        padding: 1rem 1.5rem 0.75rem 1.5rem;
+    }
+
+    .search-modal-results {
+        padding: 1rem 1.5rem;
+    }
+
+    .search-result-item {
+        grid-template-columns: auto 1fr;
+        gap: 0.5rem;
+    }
+
+    .search-result-actions {
+        grid-column: 1 / -1;
+        justify-content: stretch;
+    }
+
+    .search-result-btn {
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-modal-header h3 {
+        font-size: 1.25rem;
+    }
+
+    .search-result-icon {
+        font-size: 1.5rem;
+    }
+
+    .search-result-icon img {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .search-result-path {
+        font-size: 0.8rem;
+    }
+}

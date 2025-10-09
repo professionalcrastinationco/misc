@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmark Editor</title>
+    <link rel="stylesheet" href="editor.css">
+</head>
+<body>
+    <!-- Fixed Header -->
+    <header class="editor-header">
+        <div class="header-content">
+            <h1>Bookmark Editor</h1>
+            <div class="header-actions">
+                <button id="loadJsonBtn" class="btn btn-secondary">Load JSON</button>
+                <input type="file" id="fileInput" accept=".json" style="display: none;">
+                <button id="copyToClipboardBtn" class="btn btn-secondary">Copy to Clipboard</button>
+                <button id="downloadJsonBtn" class="btn btn-primary">Download JSON</button>
+            </div>
+        </div>
+
+        <!-- Error Summary -->
+        <div id="errorSummary" class="error-summary" style="display: none;">
+            <div class="error-summary-header">
+                <span id="errorCount">0</span> errors found - fix them to continue
+            </div>
+            <ul id="errorList"></ul>
+        </div>
+    </header>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search cards, bookmarks, or tags..." />
+        <button id="clearSearchBtn" class="btn-clear" style="display: none;">✕</button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="editor-content">
+        <div class="add-card-container">
+            <button id="addCardBtn" class="btn btn-add">+ Add Card</button>
+        </div>
+
+        <div id="cardsContainer" class="cards-container">
+            <!-- Cards will be dynamically rendered here -->
+        </div>
+    </main>
+
+    <!-- Confirmation Dialog -->
+    <div id="confirmDialog" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3>Confirm Load JSON</h3>
+            <p>This will replace all current data. Continue?</p>
+            <div class="modal-actions">
+                <button id="confirmLoadBtn" class="btn btn-primary">Yes, Continue</button>
+                <button id="cancelLoadBtn" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div id="successMessage" class="success-message" style="display: none;">
+        <span id="successText"></span>
+    </div>
+
+    <script src="editor.js"></script>
+</body>
+</html>
