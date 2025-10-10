@@ -80,10 +80,10 @@ let bookmarksData = null;
 // Load bookmarks data from JSON file
 async function loadBookmarksData() {
     try {
-        const response = await fetch('/assets/data/bookmarks.json');
+        const response = await fetch('assets/data/bookmarks.json');
         if (!response.ok) {
             if (response.status === 404) {
-                throw new Error('Bookmarks file not found. Make sure /assets/data/bookmarks.json exists.');
+                throw new Error('Bookmarks file not found. Make sure assets/data/bookmarks.json exists.');
             }
             throw new Error(`HTTP error! status: ${response.status}`);
         }
