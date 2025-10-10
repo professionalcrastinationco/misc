@@ -1,0 +1,838 @@
+{
+  "cards": [
+    {
+      "id": "design",
+      "title": "DESIGN",
+      "description": "Color Palettes • Stock Assets • Fonts",
+      "pattern": "sky",
+      "enabled": true,
+      "order": 1,
+      "bookmarks": [
+        {
+          "id": "adobe-stock",
+          "label": "Adobe Stock",
+          "url": "https://stock.adobe.com/",
+          "iconType": "emoji",
+          "icon": "🖼️",
+          "tags": [
+            "stock",
+            "images",
+            "design"
+          ],
+          "children": []
+        },
+        {
+          "id": "emojis",
+          "label": "Emojis",
+          "url": "https://emojicopy.com/",
+          "iconType": "emoji",
+          "icon": "🙂",
+          "tags": [
+            "icons",
+            "symbols"
+          ],
+          "children": []
+        },
+        {
+          "id": "svg-repo",
+          "label": "SVG Repo",
+          "url": "https://www.svgrepo.com/",
+          "iconType": "emoji",
+          "icon": "📷",
+          "tags": [
+            "svg",
+            "icons",
+            "design"
+          ],
+          "children": []
+        },
+        {
+          "id": "reshot",
+          "label": "Reshot (Icons)",
+          "url": "https://www.reshot.com/free-svg-icons/",
+          "iconType": "emoji",
+          "icon": "🎯",
+          "tags": [
+            "icons",
+            "svg",
+            "design"
+          ],
+          "children": []
+        },
+        {
+          "id": "beefree",
+          "label": "BeeFree Pro",
+          "url": "https://beefree.io/app/590652/572321/projects",
+          "iconType": "emoji",
+          "icon": "🐝",
+          "tags": [
+            "email",
+            "builder",
+            "design"
+          ],
+          "children": []
+        },
+        {
+          "id": "creatopy",
+          "label": "Creatopy",
+          "url": "https://auth.creatopy.com/auth/realms/creatopy/protocol/openid-connect/auth",
+          "iconType": "emoji",
+          "icon": "🎨",
+          "tags": [
+            "ads",
+            "graphics",
+            "design"
+          ],
+          "children": []
+        },
+        {
+          "id": "generator-v1",
+          "label": "Generator v1",
+          "url": "https://generator.goldcocreatives.com/generate",
+          "iconType": "emoji",
+          "icon": "⚡",
+          "tags": [
+            "tools",
+            "generator"
+          ],
+          "children": []
+        },
+        {
+          "id": "generator-4in1",
+          "label": "Generator 4in1",
+          "url": "https://adamismyusername.github.io/4in1/",
+          "iconType": "emoji",
+          "icon": "🔄",
+          "tags": [
+            "tools",
+            "generator"
+          ],
+          "children": []
+        },
+        {
+          "id": "tailwind-v4",
+          "label": "Tailwind v4",
+          "url": "https://tailwindcolor.com/",
+          "iconType": "emoji",
+          "icon": "🎨",
+          "tags": [
+            "colors",
+            "tailwind"
+          ],
+          "children": []
+        },
+        {
+          "id": "flat-ui",
+          "label": "Flat UI",
+          "url": "https://materialui.co/flatuicolors",
+          "iconType": "emoji",
+          "icon": "🎭",
+          "tags": [
+            "colors",
+            "palettes"
+          ],
+          "children": []
+        },
+        {
+          "id": "material",
+          "label": "Material",
+          "url": "https://materialui.co/colors",
+          "iconType": "emoji",
+          "icon": "🎯",
+          "tags": [
+            "colors",
+            "material"
+          ],
+          "children": []
+        },
+        {
+          "id": "tint-shades",
+          "label": "Tint & Shades",
+          "url": "https://maketintsandshades.com/",
+          "iconType": "emoji",
+          "icon": "🌈",
+          "tags": [
+            "colors",
+            "tools"
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "development",
+      "title": "DEVELOPMENT",
+      "description": "Github • Servers • APIs • Libraries",
+      "pattern": "pink",
+      "enabled": true,
+      "order": 2,
+      "bookmarks": [
+        {
+          "id": "github",
+          "label": "GitHub",
+          "url": "https://github.com/adamismyusername",
+          "iconType": "emoji",
+          "icon": "🐙",
+          "tags": [
+            "code",
+            "repos",
+            "dev"
+          ],
+          "children": [
+            {
+              "id": "github-national-debt-counter",
+              "label": "🔧 National Debt Counter",
+              "url": "https://github.com/adamismyusername/ndcounter?tab=readme-ov-file",
+              "iconType": "emoji",
+              "icon": "🔧",
+              "tags": [
+                "project",
+                "github"
+              ],
+              "children": []
+            },
+            {
+              "id": "github-4in1",
+              "label": "🔧 4in1 Tool",
+              "url": "https://adamismyusername.github.io/4in1/",
+              "iconType": "emoji",
+              "icon": "🔧",
+              "tags": [
+                "tools"
+              ],
+              "children": []
+            },
+            {
+              "id": "github-date-image",
+              "label": "🔧 Date Image",
+              "url": "https://dateimage.goldcoapps.com/",
+              "iconType": "emoji",
+              "icon": "🔧",
+              "tags": [
+                "tools"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "zapier",
+          "label": "Zapier",
+          "url": "https://zapier.com/app/assets/zaps",
+          "iconType": "emoji",
+          "icon": "⚡",
+          "tags": [
+            "automation",
+            "workflow"
+          ],
+          "children": []
+        },
+        {
+          "id": "webscraping",
+          "label": "WebScraping.io",
+          "url": "https://webscraping.ai/",
+          "iconType": "emoji",
+          "icon": "🕷️",
+          "tags": [
+            "scraping",
+            "data",
+            "api"
+          ],
+          "children": []
+        },
+        {
+          "id": "unbounce",
+          "label": "Unbounce",
+          "url": "https://app.unbounce.com/5598866/pages",
+          "iconType": "emoji",
+          "icon": "🚀",
+          "tags": [
+            "landing",
+            "pages",
+            "builder"
+          ],
+          "children": []
+        },
+        {
+          "id": "video-header",
+          "label": "Video Header",
+          "url": "https://app.unbounce.com/4965941/pages/8e32c647-2fd7-4652-94c9-945e25d5c511/overview",
+          "iconType": "emoji",
+          "icon": "🎬",
+          "tags": [
+            "template",
+            "video",
+            "landing"
+          ],
+          "children": []
+        },
+        {
+          "id": "elon-debt-bomb",
+          "label": "Elon Debt Bomb",
+          "url": "https://app.unbounce.com/5598866/pages/240566c7-1f64-4bed-aa22-f496f6cd6212/overview",
+          "iconType": "emoji",
+          "icon": "💣",
+          "tags": [
+            "template",
+            "landing"
+          ],
+          "children": []
+        },
+        {
+          "id": "playwright",
+          "label": "Playwright",
+          "url": "https://github.com/microsoft/playwright-mcp",
+          "iconType": "emoji",
+          "icon": "🔌",
+          "tags": [
+            "mcp",
+            "testing",
+            "playwright"
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "ai",
+      "title": "AI",
+      "description": "LLMs • MCPs • Agent • Misc Resources",
+      "pattern": "purple",
+      "enabled": true,
+      "order": 3,
+      "bookmarks": [
+        {
+          "id": "claude",
+          "label": "Claude",
+          "url": "https://claude.ai/new",
+          "iconType": "emoji",
+          "icon": "🤖",
+          "tags": [
+            "llm",
+            "ai",
+            "chat"
+          ],
+          "children": []
+        },
+        {
+          "id": "chatgpt",
+          "label": "Chat GPT",
+          "url": "https://chatgpt.com/",
+          "iconType": "emoji",
+          "icon": "💬",
+          "tags": [
+            "llm",
+            "ai",
+            "openai"
+          ],
+          "children": []
+        },
+        {
+          "id": "grok",
+          "label": "Grok",
+          "url": "https://grok.com/",
+          "iconType": "emoji",
+          "icon": "🔮",
+          "tags": [
+            "llm",
+            "ai",
+            "x"
+          ],
+          "children": []
+        },
+        {
+          "id": "affogato",
+          "label": "Affogato",
+          "url": "https://app.affogato.ai/",
+          "iconType": "emoji",
+          "icon": "☕",
+          "tags": [
+            "ai",
+            "tools"
+          ],
+          "children": []
+        },
+        {
+          "id": "n8n",
+          "label": "N8N",
+          "url": "https://n8n.srv1017071.hstgr.cloud/home/workflows",
+          "iconType": "emoji",
+          "icon": "🔗",
+          "tags": [
+            "workflow",
+            "automation",
+            "agent"
+          ],
+          "children": []
+        },
+        {
+          "id": "building-agents",
+          "label": "Building Agents",
+          "url": "https://docs.google.com/document/d/1tGc1KehX-Y8tUWFoMzRJmZXfjbbx-3v2dIEYhy2g2vk/edit?tab=t.0",
+          "iconType": "emoji",
+          "icon": "🗝️",
+          "tags": [
+            "docs",
+            "agents",
+            "ai"
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "inspiration",
+      "title": "INSPIRATION",
+      "description": "",
+      "pattern": "indigo",
+      "enabled": true,
+      "order": 4,
+      "bookmarks": [
+        {
+          "id": "landbook",
+          "label": "Landbook",
+          "url": "https://land-book.com/",
+          "iconType": "emoji",
+          "icon": "🏞️",
+          "tags": [
+            "design",
+            "gallery",
+            "inspiration"
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "sales",
+      "title": "SALES",
+      "description": "",
+      "pattern": "green",
+      "enabled": true,
+      "order": 5,
+      "bookmarks": [
+        {
+          "id": "salesforce",
+          "label": "Salesforce",
+          "url": "https://goldco.my.salesforce.com/home/home.jsp",
+          "iconType": "emoji",
+          "icon": "☁️",
+          "tags": [
+            "crm",
+            "leads",
+            "sales"
+          ],
+          "children": []
+        },
+        {
+          "id": "everflow",
+          "label": "Everflow",
+          "url": "https://goldco.everflowclient.io/",
+          "iconType": "emoji",
+          "icon": "🌊",
+          "tags": [
+            "tracking",
+            "leads",
+            "sales"
+          ],
+          "children": []
+        },
+        {
+          "id": "rainmaker",
+          "label": "Rainmaker",
+          "url": "https://docs.google.com/spreadsheets/d/1fpGm_ZezuaGa2iI9PCkc_Y1WLpNl7XCjSA8Z4H0TGcU/edit?gid=0#gid=0",
+          "iconType": "emoji",
+          "icon": "🌧️",
+          "tags": [
+            "report",
+            "tracking",
+            "sales"
+          ],
+          "children": []
+        },
+        {
+          "id": "creatives",
+          "label": "Creatives",
+          "url": "https://docs.google.com/spreadsheets/d/1UTGdgonpAwiHKYQ5B9N3zj25DXrRpk4I7zcHmlPuXtk/edit?gid=895709536#gid=895709536",
+          "iconType": "emoji",
+          "icon": "🎨",
+          "tags": [
+            "tracking",
+            "ads",
+            "report"
+          ],
+          "children": []
+        },
+        {
+          "id": "a2m-bookings",
+          "label": "A2M Bookings",
+          "url": "https://docs.google.com/spreadsheets/d/16HWgzDICOlN6cz5MUsRMfL6epiuuQIKQ/edit?gid=1192968110#gid=1192968110",
+          "iconType": "emoji",
+          "icon": "📈",
+          "tags": [
+            "report",
+            "bookings"
+          ],
+          "children": []
+        },
+        {
+          "id": "ims-bookings",
+          "label": "IMS Bookings",
+          "url": "https://docs.google.com/spreadsheets/d/1Uo0MmoYlr6KBwa5vN2q0stcFLXsNcnhpfrJ0XR8hg2k/edit?gid=550976728#gid=550976728",
+          "iconType": "emoji",
+          "icon": "📊",
+          "tags": [
+            "report",
+            "bookings"
+          ],
+          "children": []
+        },
+        {
+          "id": "pollfish",
+          "label": "PollFish",
+          "url": "https://www.pollfish.com/dashboard/surveys/",
+          "iconType": "emoji",
+          "icon": "🐠",
+          "tags": [
+            "surveys",
+            "research"
+          ],
+          "children": []
+        },
+        {
+          "id": "temp-phone",
+          "label": "Temp Phone #",
+          "url": "https://temp-number.com/countries/United-States",
+          "iconType": "emoji",
+          "icon": "📱",
+          "tags": [
+            "tools",
+            "testing"
+          ],
+          "children": []
+        },
+        {
+          "id": "responsive-test",
+          "label": "Responsive Test",
+          "url": "https://www.lambdatest.com/responsive-test-online",
+          "iconType": "emoji",
+          "icon": "📱",
+          "tags": [
+            "testing",
+            "responsive",
+            "tools"
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "marketing",
+      "title": "MARKETING",
+      "description": "",
+      "pattern": "orange",
+      "enabled": true,
+      "order": 6,
+      "bookmarks": [
+        {
+          "id": "budget",
+          "label": "Budget",
+          "url": "https://goldco-force.monday.com/overviews/30365721",
+          "iconType": "emoji",
+          "icon": "💰",
+          "tags": [
+            "budget",
+            "planning",
+            "tracking"
+          ],
+          "children": []
+        },
+        {
+          "id": "sfmc",
+          "label": "SFMC",
+          "url": "https://mck3qzddmyzrqj4h3nxgbgq76y90.login.exacttarget.com/hub-cas/login",
+          "iconType": "emoji",
+          "icon": "☁️",
+          "tags": [
+            "email",
+            "marketing",
+            "salesforce"
+          ],
+          "children": []
+        },
+        {
+          "id": "name-tool",
+          "label": "Name Tool",
+          "url": "https://kap-tool-campaign-name-generator.tiiny.site/",
+          "iconType": "emoji",
+          "icon": "🏷️",
+          "tags": [
+            "tools",
+            "naming",
+            "campaign"
+          ],
+          "children": []
+        },
+        {
+          "id": "4in1-generator",
+          "label": "4in1 Generator",
+          "url": "https://adamismyusername.github.io/4in1/",
+          "iconType": "emoji",
+          "icon": "🔄",
+          "tags": [
+            "tools",
+            "generator"
+          ],
+          "children": []
+        },
+        {
+          "id": "email-review",
+          "label": "Email Review",
+          "url": "https://docs.google.com/document/d/1qHm5vyiJ9SaEAH3HQBoUPX1OO-MQiFwhHKm5m0z-vm0/edit?tab=t.yxuzxgl7ljsq",
+          "iconType": "emoji",
+          "icon": "🔧",
+          "tags": [
+            "docs",
+            "email",
+            "review"
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "workspace",
+      "title": "WORKSPACE",
+      "description": "",
+      "pattern": "slate",
+      "enabled": true,
+      "order": 7,
+      "bookmarks": [
+        {
+          "id": "monday-dashboard",
+          "label": "Dashboard",
+          "url": "https://goldco-force.monday.com/",
+          "iconType": "emoji",
+          "icon": "📅",
+          "tags": [
+            "monday",
+            "project",
+            "mgmt"
+          ],
+          "children": []
+        },
+        {
+          "id": "kap-contracts",
+          "label": "KAP Contracts",
+          "url": "https://goldco-force.monday.com/boards/6512821712",
+          "iconType": "emoji",
+          "icon": "📄",
+          "tags": [
+            "contracts",
+            "monday"
+          ],
+          "children": []
+        },
+        {
+          "id": "legal-review",
+          "label": "In Legal Review",
+          "url": "https://goldco-force.monday.com/boards/4489882072/views/201487894",
+          "iconType": "emoji",
+          "icon": "⚖️",
+          "tags": [
+            "legal",
+            "contracts",
+            "review"
+          ],
+          "children": []
+        },
+        {
+          "id": "docs-home",
+          "label": "Docs Home",
+          "url": "https://docs.google.com/document/u/0/?tgif=c",
+          "iconType": "emoji",
+          "icon": "📝",
+          "tags": [
+            "docs",
+            "google",
+            "workspace"
+          ],
+          "children": []
+        },
+        {
+          "id": "scratch-pad",
+          "label": "Scratch Pad",
+          "url": "https://docs.google.com/document/d/13mwV4lrk4G2rKMSw40srP9l1jKtYO4Mmft-MJeCS4r8/edit?tab=t.0",
+          "iconType": "emoji",
+          "icon": "📓",
+          "tags": [
+            "notes",
+            "docs"
+          ],
+          "children": []
+        },
+        {
+          "id": "google-drive",
+          "label": "Google Drive",
+          "url": "https://drive.google.com/drive/home",
+          "iconType": "emoji",
+          "icon": "💾",
+          "tags": [
+            "drive",
+            "storage",
+            "google"
+          ],
+          "children": [
+            {
+              "id": "drive-marketing",
+              "label": "📁 Marketing Assets",
+              "url": "https://drive.google.com/drive/folders/0B7PDQqf4ZrHbMk9uTDNEXzJFMk0?resourcekey=0-4lodh5qpt2B1E_pnsjWGpg",
+              "iconType": "emoji",
+              "icon": "📁",
+              "tags": [
+                "marketing"
+              ],
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "gmail",
+          "label": "Gmail",
+          "url": "https://mail.google.com/mail/u/0/#inbox",
+          "iconType": "emoji",
+          "icon": "📮",
+          "tags": [
+            "email",
+            "google"
+          ],
+          "children": []
+        },
+        {
+          "id": "google-sheets",
+          "label": "Google Sheets",
+          "url": "https://docs.google.com/spreadsheets/u/0/?tgif=c",
+          "iconType": "emoji",
+          "icon": "📊",
+          "tags": [
+            "sheets",
+            "google",
+            "data"
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "my-apps",
+      "title": "MY APPS",
+      "description": "",
+      "pattern": "zinc",
+      "enabled": true,
+      "order": 8,
+      "bookmarks": [
+        {
+          "id": "silver-calc-inline",
+          "label": "Silver Calc (In)",
+          "url": "https://www.goldcoquiz.com/free-silver-calculator-inline/",
+          "iconType": "emoji",
+          "icon": "🪙",
+          "tags": [
+            "calculator",
+            "silver",
+            "tools"
+          ],
+          "children": []
+        },
+        {
+          "id": "silver-calc",
+          "label": "Silver Calc",
+          "url": "https://www.goldcoquiz.com/silver-calculator/",
+          "iconType": "emoji",
+          "icon": "🪙",
+          "tags": [
+            "calculator",
+            "silver",
+            "tools"
+          ],
+          "children": []
+        },
+        {
+          "id": "date-image",
+          "label": "Date Image",
+          "url": "https://adamismyusername.github.io/date-image/",
+          "iconType": "emoji",
+          "icon": "📅",
+          "tags": [
+            "tools",
+            "creative",
+            "images"
+          ],
+          "children": []
+        },
+        {
+          "id": "csv-editor",
+          "label": "CSV Editor",
+          "url": "https://adamismyusername.github.io/csveditor/",
+          "iconType": "emoji",
+          "icon": "📊",
+          "tags": [
+            "tools",
+            "csv",
+            "editor"
+          ],
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "competitors",
+      "title": "COMPETITORS",
+      "description": "",
+      "pattern": "brown",
+      "enabled": true,
+      "order": 9,
+      "bookmarks": [
+        {
+          "id": "usps",
+          "label": "USPs",
+          "url": "https://docs.google.com/spreadsheets/d/1JinA_w84g0xk7ACtWpri45MA-W5_C0B28j4Gb7srcWI/edit?gid=2009811899#gid=2009811899",
+          "iconType": "emoji",
+          "icon": "🔍",
+          "tags": [
+            "research",
+            "competitors",
+            "intel"
+          ],
+          "children": []
+        },
+        {
+          "id": "competitor-info",
+          "label": "Competitor Info",
+          "url": "https://docs.google.com/spreadsheets/d/1if2q4XmGK-f0e1qPWlyOa1vBty-f0s3fCCrqTQhpacg/edit?gid=0#gid=0",
+          "iconType": "emoji",
+          "icon": "📋",
+          "tags": [
+            "research",
+            "competitors",
+            "data"
+          ],
+          "children": []
+        },
+        {
+          "id": "subject-lines",
+          "label": "Subject Lines",
+          "url": "https://docs.google.com/spreadsheets/d/1zr3OXqT4aGCETYTXR5PaeAimhHgb-RDkxgnd9tTy_x8/edit?gid=0#gid=0",
+          "iconType": "emoji",
+          "icon": "🔨",
+          "tags": [
+            "email",
+            "competitors",
+            "tracking"
+          ],
+          "children": []
+        }
+      ]
+    }
+  ]
+}
