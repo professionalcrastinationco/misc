@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Coverage Planning Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            padding: 15px 20px;
+            margin: 0;
+            color: #fff;
+            background: #2a2a2a;
+            border-bottom: 1px solid #404040;
+            flex-shrink: 0;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 250px;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .controls {
+            background: #2a2a2a;
+            padding: 20px;
+            height: 100%;
+            overflow-y: auto;
+            border-right: 1px solid #404040;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group h3 {
+            margin-bottom: 12px;
+            color: #fff;
+            font-size: 15px;
+            border-bottom: 1px solid #404040;
+            padding-bottom: 6px;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .control-group h3::after {
+            content: '▼';
+            font-size: 10px;
+            transition: transform 0.2s;
+        }
+
+        .control-group.collapsed h3::after {
+            transform: rotate(-90deg);
+        }
+
+        .control-group.collapsed .control-group-content {
+            display: none;
+        }
+
+        .control-group-content {
+            /* wrapper for collapsible content */
+        }
+        
+        .control-item {
+            margin-bottom: 12px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 13px;
+            color: #b0b0b0;
+        }
+        
+        input[type="number"],
+        input[type="range"],
+        select {
+            width: 100%;
+            padding: 6px;
+            background: #1a1a1a;
+            border: 1px solid #404040;
+            border-radius: 4px;
+            color: #e0e0e0;
+            font-size: 13px;
+        }
+        
+        input[type="range"] {
+            padding: 0;
+            height: 6px;
+        }
+        
+        .value-display {
+            display: inline-block;
+            float: right;
+            color: #4a9eff;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #4a9eff;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: background 0.2s;
+            margin-bottom: 8px;
+        }
+        
+        button:hover {
+            background: #3a7fd5;
+        }
+        
+        button.danger {
+            background: #ff4444;
+        }
+        
+        button.danger:hover {
+            background: #cc0000;
+        }
+        
+        .canvas-container {
+            background: #1a1a1a;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        canvas {
+            background: #1a1a1a;
+            display: block;
+            cursor: crosshair;
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .camera-list {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #1a1a1a;
+            border-radius: 4px;
+            padding: 10px;
+        }
+        
+        .camera-item {
+            background: #2a2a2a;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #4a9eff;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .camera-item.selected {
+            border-left-color: #ffaa00;
+            background: #333333;
+        }
+        
+        .camera-item:hover {
+            background: #333333;
+        }
+        
+        .camera-item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+        
+        .camera-name {
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .camera-delete {
+            color: #ff4444;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+        }
+        
+        .camera-delete:hover {
+            color: #ff6666;
+        }
+        
+        .camera-details {
+            color: #888888;
+            font-size: 11px;
+        }
+        
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 6px;
+        }
+        
+        .info-text {
+            font-size: 12px;
+            color: #888888;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        
+        .color-picker {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        
+        .color-option.selected {
+            border-color: #fff;
+        }
+        
+        .instructions {
+            background: #1a1a1a;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #b0b0b0;
+        }
+        
+        .instructions strong {
+            color: #4a9eff;
+        }
+
+        .price-sidebar {
+            background: #2a2a2a;
+            padding: 20px;
+            height: 100%;
+            overflow-y: auto;
+            border-left: 1px solid #404040;
+        }
+
+        .price-sidebar h3 {
+            margin-bottom: 12px;
+            color: #fff;
+            font-size: 15px;
+            border-bottom: 1px solid #404040;
+            padding-bottom: 6px;
+        }
+
+        .price-list {
+            margin-bottom: 20px;
+        }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #333;
+            font-size: 12px;
+        }
+
+        .price-item-name {
+            color: #b0b0b0;
+        }
+
+        .price-item-price {
+            color: #4a9eff;
+            font-weight: 600;
+        }
+
+        .price-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-top: 2px solid #404040;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .price-total-label {
+            color: #fff;
+        }
+
+        .price-total-amount {
+            color: #44ff44;
+        }
+
+        .no-cameras-price {
+            font-size: 12px;
+            color: #888888;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Camera Coverage Planning Tool</h1>
+        
+        <div class="layout">
+            <div class="controls">
+                <div class="control-group" data-section="floor-select">
+                    <h3>Floor</h3>
+                    <div class="control-group-content">
+                    <div class="control-item">
+                        <label>
+                            <input type="radio" name="floor" value="1" checked> 1st Floor
+                        </label>
+                    </div>
+                    <div class="control-item">
+                        <label>
+                            <input type="radio" name="floor" value="2"> 2nd Floor
+                        </label>
+                    </div>
+                    <div class="control-item">
+                        <label>
+                            <input type="radio" name="floor" value="both"> Both Floors
+                        </label>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="control-group" data-section="add-camera">
+                    <h3>Add Camera</h3>
+                    <div class="control-group-content">
+                    <div class="control-item">
+                        <label>Camera Type</label>
+                        <select id="cameraType">
+                            <optgroup label="Panoramic (180°)">
+                                <option value="duo3">Duo 3 (180°) - $125.99</option>
+                                <option value="duo-3v-poe">Duo 3V Vandal (180°) - $139.99</option>
+                            </optgroup>
+                            <optgroup label="Wide Angle (105°+)">
+                                <option value="rlc-1240a">1240A Vandal (121°) - $99.99</option>
+                                <option value="rlc-1224a">1224A (105°) - $76.99</option>
+                            </optgroup>
+                            <optgroup label="Standard (87°)">
+                                <option value="rlc-1212a">1212A (87°) - $93.59</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="control-item">
+                        <label>Mount Height (ft) <span class="value-display" id="heightVal">9</span></label>
+                        <input type="range" id="mountHeight" min="6" max="15" value="9" step="0.5">
+                    </div>
+                    <div class="control-item">
+                        <label>Coverage Distance (ft) <span class="value-display" id="rangeVal">40</span></label>
+                        <input type="range" id="coverageRange" min="15" max="100" value="40" step="5">
+                    </div>
+                    <div class="control-item">
+                        <label>Camera Color</label>
+                        <div class="color-picker" id="colorPicker">
+                            <div class="color-option selected" data-color="#4a9eff" style="background: #4a9eff;"></div>
+                            <div class="color-option" data-color="#ff4444" style="background: #ff4444;"></div>
+                            <div class="color-option" data-color="#44ff44" style="background: #44ff44;"></div>
+                            <div class="color-option" data-color="#ffaa00" style="background: #ffaa00;"></div>
+                            <div class="color-option" data-color="#ff44ff" style="background: #ff44ff;"></div>
+                            <div class="color-option" data-color="#00ffff" style="background: #00ffff;"></div>
+                        </div>
+                    </div>
+                    <button id="addCameraBtn">Click Map to Add Camera</button>
+                    </div>
+                </div>
+
+                <div class="control-group" data-section="selected-camera">
+                    <h3>Selected Camera</h3>
+                    <div class="control-group-content">
+                    <div class="control-item">
+                        <label>Rotation (degrees) <span class="value-display" id="rotationVal">0</span></label>
+                        <input type="range" id="rotation" min="0" max="360" value="0" step="5" disabled>
+                    </div>
+                    <div class="control-item">
+                        <label>
+                            <input type="checkbox" id="showCoverage" checked disabled>
+                            Show Coverage
+                        </label>
+                    </div>
+                    <button id="deleteSelected" disabled class="danger">Delete Selected</button>
+                    </div>
+                </div>
+
+                <div class="control-group" data-section="view-options">
+                    <h3>View Options</h3>
+                    <div class="control-group-content">
+                    <div class="control-item">
+                        <label>Zoom <span class="value-display" id="zoomVal">100%</span></label>
+                        <input type="range" id="zoomSlider" min="50" max="300" value="100" step="10">
+                    </div>
+                    <div class="control-item" style="display: flex; gap: 8px;">
+                        <button id="zoomIn" style="flex: 1;">Zoom +</button>
+                        <button id="zoomOut" style="flex: 1;">Zoom -</button>
+                        <button id="zoomReset" style="flex: 1;">Reset</button>
+                    </div>
+                    <div class="control-item">
+                        <label>
+                            <input type="checkbox" id="showAllCoverage" checked>
+                            Show All Coverage
+                        </label>
+                    </div>
+                    <div class="control-item">
+                        <label>
+                            <input type="checkbox" id="showGrid" checked>
+                            Show Grid (10ft)
+                        </label>
+                    </div>
+                    <div class="control-item">
+                        <label>Opacity <span class="value-display" id="opacityVal">30%</span></label>
+                        <input type="range" id="opacity" min="10" max="50" value="30" step="5">
+                    </div>
+                    <button id="clearAll" class="danger">Clear All Cameras</button>
+                    <p class="info-text">Scroll to zoom • Shift+drag to pan</p>
+                    </div>
+                </div>
+
+                <div class="control-group" data-section="save-load">
+                    <h3>Save / Load Plan</h3>
+                    <div class="control-group-content">
+                    <button id="exportPlan">Export Plan</button>
+                    <button id="importPlan">Import Plan</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;">
+                    <p class="info-text">Export your plan to share or backup</p>
+                    </div>
+                </div>
+
+                <div class="control-group" data-section="cameras">
+                    <h3>Cameras</h3>
+                    <div class="control-group-content">
+                    <div class="camera-list" id="cameraList">
+                        <div class="info-text">No cameras placed yet</div>
+                    </div>
+                    </div>
+                </div>
+                
+                <div class="instructions">
+                    <strong>Instructions:</strong><br>
+                    • Click map to place camera<br>
+                    • Drag cameras to move<br>
+                    • Click camera to select<br>
+                    • Rotate selected camera<br>
+                    • Right-click to delete<br><br>
+                    <strong>Focus Zones:</strong><br>
+                    • Dark (0-30%): Recognition<br>
+                    • Medium (30-60%): Identification<br>
+                    • Light (60-100%): Detection only
+                </div>
+            </div>
+            
+            <div class="canvas-container">
+                <canvas id="canvas" width="1200" height="800"></canvas>
+            </div>
+
+            <div class="price-sidebar">
+                <h3>Camera Pricing</h3>
+                <div class="price-list" id="priceList">
+                    <div class="no-cameras-price">No cameras placed yet</div>
+                </div>
+                <div class="price-total">
+                    <span class="price-total-label">Total:</span>
+                    <span class="price-total-amount" id="priceTotal">$0.00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cameraPresets = {
+            'duo3': { name: 'Duo 3', fov: 180, price: 125.99 },
+            'duo-3v-poe': { name: 'Duo 3V Vandal', fov: 180, price: 139.99 },
+            'rlc-1240a': { name: '1240A Vandal', fov: 121, price: 99.99 },
+            'rlc-1224a': { name: '1224A', fov: 105, price: 76.99 },
+            'rlc-1212a': { name: '1212A', fov: 87, price: 93.59 }
+        };
+
+        let cameras = [];
+        let selectedCamera = null;
+        let draggedCamera = null;
+        let currentColor = '#4a9eff';
+        let placementMode = false;
+        let backgroundImage = new Image();
+        let imageLoaded = false;
+        let pixelsPerFoot = (1200 * 0.4) / 120; // Building is 40% of image width = 120 feet
+        let currentFloor = 1;
+
+        const floorImages = {
+            1: 'revo_layout_first_floor.jpg',
+            2: 'revo_layout_second_floor.jpg'
+        };
+
+        // Load cameras from localStorage
+        function loadCameras() {
+            const saved = localStorage.getItem('cameras');
+            if (saved) {
+                cameras = JSON.parse(saved);
+            }
+        }
+
+        // Save cameras to localStorage
+        function saveCameras() {
+            localStorage.setItem('cameras', JSON.stringify(cameras));
+        }
+
+        // Load on startup
+        loadCameras();
+
+        // Collapsible sections
+        function loadSectionStates() {
+            const saved = localStorage.getItem('sectionStates');
+            if (saved) {
+                const states = JSON.parse(saved);
+                document.querySelectorAll('.control-group[data-section]').forEach(group => {
+                    const section = group.dataset.section;
+                    if (states[section] === true) {
+                        group.classList.add('collapsed');
+                    }
+                });
+            }
+        }
+
+        function saveSectionStates() {
+            const states = {};
+            document.querySelectorAll('.control-group[data-section]').forEach(group => {
+                states[group.dataset.section] = group.classList.contains('collapsed');
+            });
+            localStorage.setItem('sectionStates', JSON.stringify(states));
+        }
+
+        // Initialize collapsible sections
+        document.querySelectorAll('.control-group[data-section] h3').forEach(header => {
+            header.addEventListener('click', () => {
+                header.parentElement.classList.toggle('collapsed');
+                saveSectionStates();
+            });
+        });
+
+        loadSectionStates();
+
+        // Zoom and pan
+        let zoom = 1;
+        let panX = 0;
+        let panY = 0;
+        let isPanning = false;
+        let lastPanX = 0;
+        let lastPanY = 0;
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Resize canvas to fill container
+        function resizeCanvas() {
+            const container = canvas.parentElement;
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            pixelsPerFoot = (canvas.width * 0.4) / 120;
+            draw();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // Initialize canvas size after DOM load
+        setTimeout(resizeCanvas, 0);
+
+        // Load the background image
+        backgroundImage.onload = function() {
+            imageLoaded = true;
+            // Building is 40% of image width = 120 feet
+            pixelsPerFoot = (canvas.width * 0.4) / 120;
+            draw();
+        };
+        backgroundImage.onerror = function() {
+            // If image fails to load, still initialize the scale and draw
+            pixelsPerFoot = (canvas.width * 0.4) / 120;
+            draw();
+        };
+        // Load floor-specific background image
+        function loadFloorImage(floor) {
+            imageLoaded = false;
+            backgroundImage.src = floorImages[floor] + '?v=' + Date.now();
+        }
+
+        loadFloorImage(currentFloor);
+
+        // Helper to check if camera is visible on current floor
+        function isCameraVisible(cam) {
+            if (currentFloor === 'both') return true;
+            return (cam.floor || 1) === currentFloor;
+        }
+
+        // DOM elements
+        const els = {
+            cameraType: document.getElementById('cameraType'),
+            mountHeight: document.getElementById('mountHeight'),
+            coverageRange: document.getElementById('coverageRange'),
+            rotation: document.getElementById('rotation'),
+            showCoverage: document.getElementById('showCoverage'),
+            showAllCoverage: document.getElementById('showAllCoverage'),
+            showGrid: document.getElementById('showGrid'),
+            opacity: document.getElementById('opacity'),
+            addCameraBtn: document.getElementById('addCameraBtn'),
+            deleteSelected: document.getElementById('deleteSelected'),
+            clearAll: document.getElementById('clearAll'),
+            cameraList: document.getElementById('cameraList'),
+            colorPicker: document.getElementById('colorPicker'),
+            zoomSlider: document.getElementById('zoomSlider'),
+            zoomIn: document.getElementById('zoomIn'),
+            zoomOut: document.getElementById('zoomOut'),
+            zoomReset: document.getElementById('zoomReset')
+        };
+
+        // Convert screen coordinates to world coordinates
+        function screenToWorld(screenX, screenY) {
+            return {
+                x: (screenX - panX) / zoom,
+                y: (screenY - panY) / zoom
+            };
+        }
+
+        // Convert world coordinates to screen coordinates
+        function worldToScreen(worldX, worldY) {
+            return {
+                x: worldX * zoom + panX,
+                y: worldY * zoom + panY
+            };
+        }
+
+        // Value displays
+        const displays = {
+            height: document.getElementById('heightVal'),
+            range: document.getElementById('rangeVal'),
+            rotation: document.getElementById('rotationVal'),
+            opacity: document.getElementById('opacityVal'),
+            zoom: document.getElementById('zoomVal')
+        };
+
+        // Update displays
+        function updateDisplays() {
+            displays.height.textContent = els.mountHeight.value;
+            displays.range.textContent = els.coverageRange.value;
+            displays.rotation.textContent = els.rotation.value;
+            displays.opacity.textContent = els.opacity.value + '%';
+            displays.zoom.textContent = Math.round(zoom * 100) + '%';
+        }
+
+        // Zoom functions
+        function setZoom(newZoom, centerX, centerY) {
+            const oldZoom = zoom;
+            zoom = Math.max(0.5, Math.min(3, newZoom));
+
+            // Zoom towards center point
+            if (centerX !== undefined && centerY !== undefined) {
+                panX = centerX - (centerX - panX) * (zoom / oldZoom);
+                panY = centerY - (centerY - panY) * (zoom / oldZoom);
+            }
+
+            els.zoomSlider.value = zoom * 100;
+            updateDisplays();
+            draw();
+        }
+
+        // Zoom controls
+        els.zoomSlider.addEventListener('input', () => {
+            setZoom(els.zoomSlider.value / 100, canvas.width / 2, canvas.height / 2);
+        });
+
+        els.zoomIn.addEventListener('click', () => {
+            setZoom(zoom + 0.1, canvas.width / 2, canvas.height / 2);
+        });
+
+        els.zoomOut.addEventListener('click', () => {
+            setZoom(zoom - 0.1, canvas.width / 2, canvas.height / 2);
+        });
+
+        els.zoomReset.addEventListener('click', () => {
+            zoom = 1;
+            panX = 0;
+            panY = 0;
+            els.zoomSlider.value = 100;
+            updateDisplays();
+            draw();
+        });
+
+        // Mouse wheel zoom
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            const zoomDelta = e.deltaY > 0 ? -0.1 : 0.1;
+            setZoom(zoom + zoomDelta, mouseX, mouseY);
+        }, { passive: false });
+
+        // Color picker
+        els.colorPicker.addEventListener('click', (e) => {
+            if (e.target.classList.contains('color-option')) {
+                document.querySelectorAll('.color-option').forEach(el => el.classList.remove('selected'));
+                e.target.classList.add('selected');
+                currentColor = e.target.dataset.color;
+            }
+        });
+
+        // Input handlers
+        Object.keys(els).forEach(key => {
+            if (els[key].tagName === 'INPUT') {
+                els[key].addEventListener('input', () => {
+                    updateDisplays();
+                    if (selectedCamera && key === 'rotation') {
+                        selectedCamera.rotation = parseFloat(els.rotation.value);
+                        saveCameras();
+                        draw();
+                    } else if (key === 'showCoverage' && selectedCamera) {
+                        selectedCamera.showCoverage = els.showCoverage.checked;
+                        saveCameras();
+                        draw();
+                    } else if (key === 'coverageRange' && selectedCamera) {
+                        selectedCamera.range = parseFloat(els.coverageRange.value);
+                        saveCameras();
+                        updateCameraList();
+                        draw();
+                    } else {
+                        draw();
+                    }
+                });
+            }
+        });
+
+        els.showAllCoverage.addEventListener('change', draw);
+        els.showGrid.addEventListener('change', draw);
+
+        // Floor switching
+        document.querySelectorAll('input[name="floor"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'both') {
+                    currentFloor = 'both';
+                    loadFloorImage(1); // Show first floor image as base
+                } else {
+                    currentFloor = parseInt(e.target.value);
+                    loadFloorImage(currentFloor);
+                }
+                draw();
+            });
+        });
+
+        // Placement mode toggle
+        function updatePlacementButton() {
+            if (placementMode) {
+                els.addCameraBtn.textContent = 'Placement Mode: ON';
+                els.addCameraBtn.style.background = '#44ff44';
+                els.addCameraBtn.style.color = '#000';
+                canvas.style.cursor = 'crosshair';
+            } else {
+                els.addCameraBtn.textContent = 'Placement Mode: OFF';
+                els.addCameraBtn.style.background = '#666';
+                els.addCameraBtn.style.color = '#fff';
+                canvas.style.cursor = 'default';
+            }
+        }
+
+        els.addCameraBtn.addEventListener('click', () => {
+            placementMode = !placementMode;
+            updatePlacementButton();
+        });
+
+        updatePlacementButton();
+
+        // Canvas click handler - add camera
+        canvas.addEventListener('click', (e) => {
+            if (isPanning) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const screenX = e.clientX - rect.left;
+            const screenY = e.clientY - rect.top;
+            const world = screenToWorld(screenX, screenY);
+
+            // Check if clicking on existing camera (only on current floor)
+            let clickedCamera = null;
+            const floorCameras = cameras.filter(isCameraVisible);
+            for (let i = floorCameras.length - 1; i >= 0; i--) {
+                const cam = floorCameras[i];
+                const dist = Math.sqrt((world.x - cam.x) ** 2 + (world.y - cam.y) ** 2);
+                if (dist < 15 / zoom) {
+                    clickedCamera = cam;
+                    break;
+                }
+            }
+
+            if (clickedCamera) {
+                selectCamera(clickedCamera);
+            } else if (placementMode) {
+                // Add new camera
+                const preset = cameraPresets[els.cameraType.value];
+                const camera = {
+                    id: Date.now(),
+                    x: world.x,
+                    y: world.y,
+                    type: els.cameraType.value,
+                    name: preset.name,
+                    fov: preset.fov,
+                    rotation: 0,
+                    mountHeight: parseFloat(els.mountHeight.value),
+                    range: parseFloat(els.coverageRange.value),
+                    color: currentColor,
+                    showCoverage: true,
+                    // Optical zoom properties
+                    opticalZoom: preset.opticalZoom || null,
+                    zoomedFov: preset.zoomedFov || null,
+                    zoomRangeMultiplier: preset.zoomRangeMultiplier || null,
+                    price: preset.price || 0,
+                    floor: currentFloor === 'both' ? 1 : currentFloor
+                };
+                cameras.push(camera);
+                saveCameras();
+                selectCamera(camera);
+                updateCameraList();
+                updatePriceList();
+                draw();
+            }
+        });
+
+        // Context menu - delete camera
+        canvas.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const screenX = e.clientX - rect.left;
+            const screenY = e.clientY - rect.top;
+            const world = screenToWorld(screenX, screenY);
+
+            for (let i = cameras.length - 1; i >= 0; i--) {
+                const cam = cameras[i];
+                if (!isCameraVisible(cam)) continue;
+                const dist = Math.sqrt((world.x - cam.x) ** 2 + (world.y - cam.y) ** 2);
+                if (dist < 15 / zoom) {
+                    cameras.splice(i, 1);
+                    saveCameras();
+                    if (selectedCamera === cam) {
+                        selectCamera(null);
+                    }
+                    updateCameraList();
+                    updatePriceList();
+                    draw();
+                    break;
+                }
+            }
+        });
+
+        // Mouse down - start drag or pan
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const screenX = e.clientX - rect.left;
+            const screenY = e.clientY - rect.top;
+
+            // Middle mouse button or Shift+left-click for panning
+            if (e.button === 1 || (e.button === 0 && e.shiftKey)) {
+                isPanning = true;
+                lastPanX = screenX;
+                lastPanY = screenY;
+                canvas.style.cursor = 'move';
+                e.preventDefault();
+                return;
+            }
+
+            const world = screenToWorld(screenX, screenY);
+
+            for (let i = cameras.length - 1; i >= 0; i--) {
+                const cam = cameras[i];
+                if (!isCameraVisible(cam)) continue;
+                const dist = Math.sqrt((world.x - cam.x) ** 2 + (world.y - cam.y) ** 2);
+                if (dist < 15 / zoom) {
+                    draggedCamera = cam;
+                    canvas.style.cursor = 'grabbing';
+                    break;
+                }
+            }
+        });
+
+        // Mouse move - drag camera or pan
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const screenX = e.clientX - rect.left;
+            const screenY = e.clientY - rect.top;
+
+            if (isPanning) {
+                panX += screenX - lastPanX;
+                panY += screenY - lastPanY;
+                lastPanX = screenX;
+                lastPanY = screenY;
+                draw();
+                return;
+            }
+
+            const world = screenToWorld(screenX, screenY);
+
+            if (draggedCamera) {
+                draggedCamera.x = world.x;
+                draggedCamera.y = world.y;
+                draw();
+            } else {
+                // Update cursor
+                let overCamera = false;
+                for (let cam of cameras) {
+                    if (!isCameraVisible(cam)) continue;
+                    const dist = Math.sqrt((world.x - cam.x) ** 2 + (world.y - cam.y) ** 2);
+                    if (dist < 15 / zoom) {
+                        overCamera = true;
+                        break;
+                    }
+                }
+                canvas.style.cursor = overCamera ? 'grab' : (placementMode ? 'crosshair' : 'default');
+            }
+        });
+
+        // Mouse up - end drag or pan
+        canvas.addEventListener('mouseup', () => {
+            if (draggedCamera) {
+                saveCameras();
+            }
+            draggedCamera = null;
+            isPanning = false;
+            canvas.style.cursor = placementMode ? 'crosshair' : 'default';
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            draggedCamera = null;
+            isPanning = false;
+            canvas.style.cursor = placementMode ? 'crosshair' : 'default';
+        });
+
+        // Delete selected camera
+        els.deleteSelected.addEventListener('click', () => {
+            if (selectedCamera) {
+                const index = cameras.indexOf(selectedCamera);
+                if (index > -1) {
+                    cameras.splice(index, 1);
+                    saveCameras();
+                    selectCamera(null);
+                    updateCameraList();
+                    updatePriceList();
+                    draw();
+                }
+            }
+        });
+
+        // Clear all cameras
+        els.clearAll.addEventListener('click', () => {
+            if (cameras.length > 0 && confirm('Delete all cameras?')) {
+                cameras = [];
+                saveCameras();
+                selectCamera(null);
+                updateCameraList();
+                updatePriceList();
+                draw();
+            }
+        });
+
+        function selectCamera(camera) {
+            selectedCamera = camera;
+
+            if (camera) {
+                els.rotation.disabled = false;
+                els.showCoverage.disabled = false;
+                els.deleteSelected.disabled = false;
+                els.rotation.value = camera.rotation;
+                els.showCoverage.checked = camera.showCoverage;
+                els.coverageRange.value = camera.range;
+                updateDisplays();
+            } else {
+                els.rotation.disabled = true;
+                els.showCoverage.disabled = true;
+                els.deleteSelected.disabled = true;
+            }
+            
+            updateCameraList();
+            draw();
+        }
+
+        function updateCameraList() {
+            const list = els.cameraList;
+            
+            if (cameras.length === 0) {
+                list.innerHTML = '<div class="info-text">No cameras placed yet</div>';
+                return;
+            }
+            
+            list.innerHTML = cameras.map((cam, i) => `
+                <div class="camera-item ${selectedCamera === cam ? 'selected' : ''}" data-id="${cam.id}">
+                    <div class="camera-item-header">
+                        <span class="camera-name" style="color: ${cam.color};">● Camera ${i + 1}</span>
+                        <span class="camera-delete" data-id="${cam.id}">×</span>
+                    </div>
+                    <div class="camera-details">
+                        ${cam.name} • ${cam.fov}° • ${cam.range}ft${cam.opticalZoom ? ` • ${cam.opticalZoom}x zoom` : ''}
+                    </div>
+                    <div class="camera-floor-toggle" style="margin-top: 6px; font-size: 11px;">
+                        <label style="margin-right: 8px; cursor: pointer;">
+                            <input type="radio" name="cam-floor-${cam.id}" value="1" ${(cam.floor || 1) === 1 ? 'checked' : ''} data-cam-id="${cam.id}"> 1F
+                        </label>
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="cam-floor-${cam.id}" value="2" ${cam.floor === 2 ? 'checked' : ''} data-cam-id="${cam.id}"> 2F
+                        </label>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Add click handlers
+            list.querySelectorAll('.camera-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    // Don't select camera when clicking delete or floor toggles
+                    if (!e.target.classList.contains('camera-delete') &&
+                        e.target.type !== 'radio' &&
+                        e.target.tagName !== 'LABEL') {
+                        const id = parseInt(item.dataset.id);
+                        const cam = cameras.find(c => c.id === id);
+                        if (cam) selectCamera(cam);
+                    }
+                });
+            });
+            
+            list.querySelectorAll('.camera-delete').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const id = parseInt(btn.dataset.id);
+                    const index = cameras.findIndex(c => c.id === id);
+                    if (index > -1) {
+                        const cam = cameras[index];
+                        cameras.splice(index, 1);
+                        saveCameras();
+                        if (selectedCamera === cam) {
+                            selectCamera(null);
+                        }
+                        updateCameraList();
+                        updatePriceList();
+                        draw();
+                    }
+                });
+            });
+
+            // Floor toggle handlers
+            list.querySelectorAll('.camera-floor-toggle input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    const camId = parseInt(e.target.dataset.camId);
+                    const cam = cameras.find(c => c.id === camId);
+                    if (cam) {
+                        cam.floor = parseInt(e.target.value);
+                        saveCameras();
+                        draw();
+                    }
+                });
+            });
+        }
+
+        function updatePriceList() {
+            const list = document.getElementById('priceList');
+            const totalEl = document.getElementById('priceTotal');
+
+            if (cameras.length === 0) {
+                list.innerHTML = '<div class="no-cameras-price">No cameras placed yet</div>';
+                totalEl.textContent = '$0.00';
+                return;
+            }
+
+            let total = 0;
+            list.innerHTML = cameras.map((cam, i) => {
+                total += cam.price || 0;
+                return `
+                    <div class="price-item">
+                        <span class="price-item-name">Camera ${i + 1} (${cam.name})</span>
+                        <span class="price-item-price">$${(cam.price || 0).toFixed(2)}</span>
+                    </div>
+                `;
+            }).join('');
+
+            totalEl.textContent = '$' + total.toFixed(2);
+        }
+
+        function drawGrid() {
+            if (!els.showGrid.checked) return;
+            
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            
+            const gridSize = 10 * pixelsPerFoot; // 10 feet grid
+            
+            // Vertical lines
+            for (let x = 0; x < canvas.width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            
+            // Horizontal lines
+            for (let y = 0; y < canvas.height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+        }
+
+        function drawCameraCoverage(camera) {
+            if (!camera.showCoverage || !els.showAllCoverage.checked) return;
+
+            const fovRad = (camera.fov * Math.PI) / 180;
+            const rotationRad = (camera.rotation * Math.PI) / 180;
+            const range = camera.range * pixelsPerFoot;
+
+            const startAngle = rotationRad - fovRad / 2;
+            const endAngle = rotationRad + fovRad / 2;
+
+            const opacity = parseInt(els.opacity.value) / 100;
+
+            // Convert hex color to rgb
+            const r = parseInt(camera.color.slice(1, 3), 16);
+            const g = parseInt(camera.color.slice(3, 5), 16);
+            const b = parseInt(camera.color.slice(5, 7), 16);
+
+            // Focus zones: recognition (0-30%), identification (30-60%), detection (60-100%)
+            const recognitionRange = range * 0.3;
+            const identificationRange = range * 0.6;
+
+            // Draw detection zone (outer - lightest)
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity * 0.3})`;
+            ctx.beginPath();
+            ctx.moveTo(camera.x, camera.y);
+            ctx.arc(camera.x, camera.y, range, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw identification zone (middle)
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity * 0.6})`;
+            ctx.beginPath();
+            ctx.moveTo(camera.x, camera.y);
+            ctx.arc(camera.x, camera.y, identificationRange, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw recognition zone (inner - darkest/most opaque)
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity * 1.0})`;
+            ctx.beginPath();
+            ctx.moveTo(camera.x, camera.y);
+            ctx.arc(camera.x, camera.y, recognitionRange, startAngle, endAngle);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw zone boundary rings
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+
+            // Recognition boundary
+            ctx.beginPath();
+            ctx.arc(camera.x, camera.y, recognitionRange, startAngle, endAngle);
+            ctx.stroke();
+
+            // Identification boundary
+            ctx.beginPath();
+            ctx.arc(camera.x, camera.y, identificationRange, startAngle, endAngle);
+            ctx.stroke();
+
+            ctx.setLineDash([]);
+
+            // Draw outer edge
+            ctx.strokeStyle = camera.color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(camera.x, camera.y);
+            ctx.arc(camera.x, camera.y, range, startAngle, endAngle);
+            ctx.closePath();
+            ctx.stroke();
+
+            // Draw extended zoom coverage for cameras with optical zoom
+            if (camera.opticalZoom && camera.zoomedFov && camera.zoomRangeMultiplier) {
+                const zoomedFovRad = (camera.zoomedFov * Math.PI) / 180;
+                const zoomedRange = camera.range * camera.zoomRangeMultiplier * pixelsPerFoot;
+
+                const zoomStartAngle = rotationRad - zoomedFovRad / 2;
+                const zoomEndAngle = rotationRad + zoomedFovRad / 2;
+
+                // Draw zoomed coverage with dashed outline
+                ctx.setLineDash([8, 4]);
+                ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity * 0.3})`;
+                ctx.strokeStyle = camera.color;
+                ctx.lineWidth = 2;
+
+                ctx.beginPath();
+                ctx.moveTo(camera.x, camera.y);
+                ctx.arc(camera.x, camera.y, zoomedRange, zoomStartAngle, zoomEndAngle);
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.setLineDash([]); // Reset dash pattern
+            }
+
+            // Draw direction indicator
+            ctx.strokeStyle = camera.color;
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(camera.x, camera.y);
+            ctx.lineTo(
+                camera.x + Math.cos(rotationRad) * 30,
+                camera.y + Math.sin(rotationRad) * 30
+            );
+            ctx.stroke();
+        }
+
+        function drawCamera(camera) {
+            const isSelected = camera === selectedCamera;
+            
+            // Camera body
+            ctx.fillStyle = camera.color;
+            ctx.beginPath();
+            ctx.arc(camera.x, camera.y, 10, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Selection ring
+            if (isSelected) {
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(camera.x, camera.y, 14, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+            
+            // Camera lens
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.arc(camera.x, camera.y, 4, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Apply zoom and pan transformations
+            ctx.save();
+            ctx.translate(panX, panY);
+            ctx.scale(zoom, zoom);
+
+            // Draw background image
+            if (imageLoaded) {
+                ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+            }
+
+            // Draw grid
+            drawGrid();
+
+            // Draw camera coverage (only for current floor)
+            cameras.filter(isCameraVisible).forEach(camera => {
+                drawCameraCoverage(camera);
+            });
+
+            // Draw cameras (only for current floor)
+            cameras.filter(isCameraVisible).forEach(camera => {
+                drawCamera(camera);
+            });
+
+            ctx.restore();
+        }
+
+        // Export plan to JSON file
+        document.getElementById('exportPlan').addEventListener('click', () => {
+            const data = {
+                cameras: cameras,
+                exportDate: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'camera-plan-' + new Date().toISOString().split('T')[0] + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // Import plan from JSON file
+        document.getElementById('importPlan').addEventListener('click', () => {
+            document.getElementById('importFile').click();
+        });
+
+        document.getElementById('importFile').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const data = JSON.parse(event.target.result);
+                    if (data.cameras && Array.isArray(data.cameras)) {
+                        cameras = data.cameras;
+                        saveCameras();
+                        selectCamera(null);
+                        updateCameraList();
+                        updatePriceList();
+                        draw();
+                        alert('Plan imported successfully! (' + cameras.length + ' cameras)');
+                    } else {
+                        alert('Invalid plan file format.');
+                    }
+                } catch (err) {
+                    alert('Error reading file: ' + err.message);
+                }
+            };
+            reader.readAsText(file);
+            e.target.value = ''; // Reset for re-importing same file
+        });
+
+        // Initial setup
+        updateDisplays();
+        updateCameraList();
+        updatePriceList();
+        draw();
+    </script>
+</body>
+</html>
