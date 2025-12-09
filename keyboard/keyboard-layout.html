@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZMK Keyboard Layout Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .container {
+            min-width: fit-content;
+            margin: 0 auto;
+            transition: width 0.2s ease;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #fff;
+            font-weight: 300;
+        }
+
+        .layer-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .layer-tab {
+            padding: 12px 24px;
+            background: #2d2d44;
+            border: none;
+            border-radius: 8px;
+            color: #aaa;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .layer-tab:hover {
+            background: #3d3d5c;
+            color: #fff;
+        }
+
+        .layer-tab.active {
+            background: #4a4a7a;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(74, 74, 122, 0.4);
+        }
+
+        .keyboard-container {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            padding: 40px 20px;
+            background: #16162a;
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+
+        .half {
+            display: grid;
+            gap: 6px;
+        }
+
+        .left-half {
+            grid-template-columns: repeat(6, 54px);
+            grid-template-rows: repeat(4, 54px) 70px;
+        }
+
+        .right-half {
+            grid-template-columns: repeat(6, 54px);
+            grid-template-rows: repeat(4, 54px) 70px;
+        }
+
+        .key {
+            background: #3d4559;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: #ddd;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            padding: 4px;
+            min-height: 54px;
+        }
+
+        .key:hover {
+            background: #4d5569;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .key.transparent {
+            background: transparent;
+            box-shadow: none;
+            cursor: default;
+        }
+
+        .key.transparent:hover {
+            transform: none;
+        }
+
+        .key .primary {
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .key .secondary {
+            font-size: 9px;
+            color: #888;
+            margin-top: 2px;
+            text-align: center;
+        }
+
+        .key .hold-indicator {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 16px;
+            height: 16px;
+            background: #3366cc;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .key .hold-bottom {
+            position: absolute;
+            bottom: 3px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #3366cc;
+            border-radius: 3px;
+            padding: 1px 4px;
+            font-size: 8px;
+            color: #fff;
+        }
+
+        .key.accent {
+            background: #7a3d3d;
+        }
+
+        .key.accent:hover {
+            background: #8a4d4d;
+        }
+
+        .key.highlight {
+            border: 2px solid #cc3333;
+        }
+
+        .key.elet {
+            background: #4466aa;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+        }
+
+        /* Thumb cluster positioning */
+        .thumb-cluster {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+            align-items: flex-start;
+            grid-column: span 6;
+            padding-top: 10px;
+        }
+
+        .thumb-cluster.right {
+            justify-content: flex-start;
+        }
+
+        .thumb-key {
+            width: 58px;
+            height: 50px;
+            transform-origin: center;
+        }
+
+        .thumb-key.rotated-left {
+            transform: rotate(-15deg);
+        }
+
+        .thumb-key.rotated-right {
+            transform: rotate(15deg);
+        }
+
+        .layer-info {
+            text-align: center;
+            padding: 20px;
+            background: #2d2d44;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .layer-info h3 {
+            margin-bottom: 10px;
+            color: #7a8aaa;
+        }
+
+        .layer-info p {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .legend-color.hold {
+            background: #3366cc;
+        }
+
+        .legend-color.accent {
+            background: #7a3d3d;
+        }
+
+        .legend-color.normal {
+            background: #3d4559;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #555;
+            font-size: 12px;
+        }
+
+        /* Key press animation */
+        .key.pressed {
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            background: #5d6579;
+        }
+
+        @media (max-width: 900px) {
+            .keyboard-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 40px;
+            }
+        }
+
+        /* Zoom Controls */
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 12px 20px;
+            background: #2d2d44;
+            border-radius: 8px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .zoom-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 6px;
+            background: #3d4559;
+            color: #ddd;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zoom-btn:hover {
+            background: #4d5569;
+            color: #fff;
+        }
+
+        .zoom-btn:active {
+            transform: scale(0.95);
+        }
+
+        .zoom-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .zoom-level {
+            font-size: 14px;
+            color: #aaa;
+            min-width: 60px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .zoom-slider {
+            width: 120px;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #3d4559;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .zoom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #4a4a7a;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .zoom-slider::-webkit-slider-thumb:hover {
+            background: #5a5a9a;
+        }
+
+        .zoom-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #4a4a7a;
+            cursor: pointer;
+            border: none;
+        }
+
+        .zoom-reset {
+            font-size: 12px;
+            padding: 6px 12px;
+            width: auto;
+        }
+
+        .keyboard-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            transition: all 0.2s ease;
+        }
+
+        .keyboard-container {
+            transform-origin: center center;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .zoom-hint {
+            font-size: 11px;
+            color: #666;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ZMK Keyboard Layout</h1>
+
+        <div class="layer-tabs">
+            <button class="layer-tab active" data-layer="base">Base</button>
+            <button class="layer-tab" data-layer="navnum">NavNum</button>
+            <button class="layer-tab" data-layer="symbols">Symbols</button>
+            <button class="layer-tab" data-layer="system">System</button>
+        </div>
+
+        <div class="zoom-controls">
+            <button class="zoom-btn" id="zoom-out" title="Zoom Out (-)">-</button>
+            <input type="range" class="zoom-slider" id="zoom-slider" min="50" max="200" value="100">
+            <button class="zoom-btn" id="zoom-in" title="Zoom In (+)">+</button>
+            <span class="zoom-level" id="zoom-level">100%</span>
+            <button class="zoom-btn zoom-reset" id="zoom-reset" title="Reset Zoom (0)">Reset</button>
+            <span class="zoom-hint">Ctrl+Scroll or +/-</span>
+        </div>
+
+        <div class="keyboard-wrapper" id="keyboard-wrapper">
+            <div class="keyboard-container" id="keyboard-container">
+                <div class="half left-half" id="left-half"></div>
+                <div class="half right-half" id="right-half"></div>
+            </div>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color normal"></div>
+                <span>Normal Key</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color hold"></div>
+                <span>Hold Function</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color accent"></div>
+                <span>Special Key</span>
+            </div>
+        </div>
+
+        <div class="layer-info" id="layer-info">
+            <h3>Base Layer</h3>
+            <p>Primary typing layer with QWERTY layout. Hold keys show modifier and layer access functions.</p>
+        </div>
+
+        <footer>Created with Interactive Keyboard Layout Viewer</footer>
+    </div>
+
+    <script>
+        // Keyboard layout data
+        const layouts = {
+            base: {
+                left: [
+                    { primary: 'TAB' },
+                    { primary: 'Q' },
+                    { primary: 'W', hold: '@' },
+                    { primary: 'E', hold: '#' },
+                    { primary: 'R', hold: '$' },
+                    { primary: 'T', hold: '%' },
+
+                    { primary: 'LSHFT' },
+                    { primary: 'A' },
+                    { primary: 'S', hold: '\\' },
+                    { primary: 'D', secondary: 'ESCAPE', hold: '=' },
+                    { primary: 'F', secondary: 'PASTE', hold: '=' },
+                    { primary: 'G', secondary: 'COPY' },
+
+                    { primary: 'LCTRL' },
+                    { primary: 'Z' },
+                    { primary: 'X' },
+                    { primary: 'V' },
+                    { primary: 'B' },
+                    { primary: '', transparent: true },
+
+                    { primary: '', transparent: true },
+                    { primary: '', transparent: true },
+                    { primary: '', transparent: true },
+                    { primary: 'LGUI' },
+                    { primary: 'NavNum', secondary: '' },
+                    { primary: 'SPACE' }
+                ],
+                leftThumb: [
+                    { primary: 'LGUI', rotated: 'left' },
+                    { primary: 'NavNum', rotated: 'left' },
+                    { primary: 'SPACE', rotated: 'left' }
+                ],
+                right: [
+                    { primary: 'Y' },
+                    { primary: 'U', hold: '+' },
+                    { primary: 'I', hold: '*' },
+                    { primary: 'O', hold: '{' },
+                    { primary: 'P' },
+                    { primary: 'BACKSPACE' },
+
+                    { primary: 'H' },
+                    { primary: 'J', hold: '{', secondary: 'KP' },
+                    { primary: 'K', hold: '/' },
+                    { primary: 'L', hold: '}' },
+                    { primary: ';' },
+                    { primary: "'" },
+
+                    { primary: 'N' },
+                    { primary: 'M', secondary: 'MINUS', hold: '[' },
+                    { primary: ',', hold: ']' },
+                    { primary: '.' },
+                    { primary: '/' },
+                    { primary: 'RSHFT' },
+
+                    { primary: '', transparent: true },
+                    { primary: 'RET' },
+                    { primary: 'TAB', secondary: 'Symbols' },
+                    { primary: 'RIGHT', secondary: 'ALT' },
+                    { primary: '', transparent: true },
+                    { primary: '', transparent: true }
+                ],
+                rightThumb: [
+                    { primary: 'RET', rotated: 'right' },
+                    { primary: 'TAB', secondary: 'Symbols', rotated: 'right' },
+                    { primary: 'RIGHT ALT', rotated: 'right' }
+                ],
+                info: {
+                    title: 'Base Layer',
+                    description: 'Primary typing layer with QWERTY layout. Hold keys show modifier and layer access functions.'
+                }
+            },
+            navnum: {
+                left: [
+                    { primary: '', hold: '\\' },
+                    { primary: '1' },
+                    { primary: '2', hold: '@' },
+                    { primary: '3', hold: '#' },
+                    { primary: '4', hold: '$' },
+                    { primary: '5', hold: '%' },
+
+                    { primary: '&caps_wo', secondary: '' },
+                    { primary: '', hold: '\\' },
+                    { primary: 'UP', secondary: 'ARROW', hold: '=' },
+                    { primary: '', secondary: 'browser', hold: '=' },
+                    { primary: 'PAGE', secondary: 'UP' },
+                    { primary: '' },
+
+                    { primary: '' },
+                    { primary: 'LEFT', secondary: 'PASTE', hold: '=' },
+                    { primary: '', secondary: 'ESCAPE', hold: '=' },
+                    { primary: 'RIGHT', secondary: 'COPY', hold: '=' },
+                    { primary: 'PAGE', secondary: 'DOWN' },
+                    { primary: '', transparent: true },
+
+                    { primary: '', transparent: true },
+                    { primary: '', transparent: true },
+                    { primary: '', transparent: true },
+                    { primary: 'LGUI' },
+                    { primary: '', accent: true },
+                    { primary: 'SPACE' }
+                ],
+                right: [
+                    { primary: '6' },
+                    { primary: '7', hold: '+' },
+                    { primary: '8', hold: '*' },
+                    { primary: '9', hold: '{' },
+                    { primary: '0' },
+                    { primary: '' },
+
+                    { primary: '0' },
+                    { primary: '4', hold: '{', secondary: '' },
+                    { primary: '5', hold: '/' },
+                    { primary: '6', hold: '}' },
+                    { primary: '' },
+                    { primary: '' },
+
+                    { primary: '', secondary: 'KP MINUS', hold: '[' },
+                    { primary: '1', hold: '[' },
+                    { primary: '2', hold: ']' },
+                    { primary: '3', hold: ']' },
+                    { primary: '' },
+                    { primary: '' },
+
+                    { primary: '', transparent: true },
+                    { primary: 'RET' },
+                    { primary: '' },
+                    { primary: '' },
+                    { primary: '', transparent: true },
+                    { primary: '', transparent: true }
+                ],
+                info: {
+                    title: 'NavNum Layer',
+                    description: 'Navigation and number pad layer. Arrow keys on the left, numpad on the right.'
+                }
+            },
+            symbols: {
+                left: [
+                    { primary: '' },
+                    { primary: '!' },
+                    { primary: '@', hold: '@' },
+                    { primary: '#', hold: '#' },
+                    { primary: '$', hold: '$' },
+                    { primary: '%', hold: '%' },
+
+                    { primary: '' },
+                    { primary: '' },
+                    { primary: 'UP', secondary: 'ARROW', hold: '=' },
+                    { primary: '', secondary: 'ESCAPE', hold: '=' },
+                    { primary: '', secondary: 'PASTE', hold: '=' },
+                    { primary: '~' },
+
+                    { primary: '' },
+                    { primary: 'LEFT', secondary: 'ARROW', hold: '\\' },
+                    { primary: '', hold: '=' },
+                    { primary: 'RIGHT', secondary: 'ARROW', hold: '=' },
+                    { primary: '-' },
+                    { primary: '', transparent: true },
+
+                    { primary: '', transparent: true },
+                    { primary: '', transparent: true },
+                    { primary: '', transparent: true },
+                    { primary: 'LGUI' },
+                    { primary: '' },
+                    { primary: 'SPACE' }
+                ],
+                right: [
+                    { primary: '^' },
+                    { primary: '&', hold: '+' },
+                    { primary: '*', hold: '*' },
+                    { primary: '(', hold: '{' },
+                    { primary: ')' },
+                    { primary: '' },
+
+                    { primary: '-' },
+                    { primary: '{', hold: '[' },
+                    { primary: '}', hold: '/' },
+                    { primary: ']', hold: '}' },
+                    { primary: '' },
+                    { primary: '\\' },
+
+                    { primary: '+', secondary: 'KP MINUS', hold: '[' },
+                    { primary: '{', hold: ']' },
+                    { primary: '}', hold: ']' },
+                    { primary: '}' },
+                    { primary: '|' },
+                    { primary: '' },
+
+                    { primary: '', transparent: true },
+                    { primary: 'RET' },
+                    { primary: '', accent: true },
+                    { primary: '' },
+                    { primary: '', transparent: true },
+                    { primary: '', transparent: true }
+                ],
+                info: {
+                    title: 'Symbols Layer',
+                    description: 'Symbol layer for programming and special characters. Quick access to brackets, operators, and punctuation.'
+                }
+            },
+            system: {
+                left: [
+                    { primary: '' },
+                    { primary: 'F1' },
+                    { primary: 'F2', hold: '@' },
+                    { primary: 'F3', hold: '#' },
+                    { primary: 'F4', hold: '$' },
+                    { primary: 'F5', hold: '%' },
+
+                    { primary: '' },
+                    { primary: 'F12' },
+                    { primary: 'F11', hold: '\\' },
+                    { primary: '', secondary: 'ESCAPE', hold: '=' },
+                    { primary: '', secondary: 'PASTE', hold: '=' },
+                    { primary: '', highlight: true },
+
+                    { primary: '' },
+                    { primary: 'BT', secondary: '0' },
+                    { primary: 'BT', secondary: '1' },
+                    { primary: 'BT', secondary: '2', hold: '=' },
+                    { primary: 'BT CLR' },
+                    { primary: 'BT CLR', secondary: 'ALL', highlight: true },
+
+                    { primary: '', transparent: true },
+                    { primary: '', transparent: true },
+                    { primary: '', transparent: true },
+                    { primary: '' },
+                    { primary: '', accent: true },
+                    { primary: '', accent: true }
+                ],
+                right: [
+                    { primary: 'F6' },
+                    { primary: 'F7', hold: '+' },
+                    { primary: 'F8', hold: '*' },
+                    { primary: 'F9', hold: '{' },
+                    { primary: 'F10' },
+                    { primary: '' },
+
+                    { primary: '' },
+                    { primary: '', hold: '{' },
+                    { primary: '', hold: '/' },
+                    { primary: '', hold: '}' },
+                    { primary: '' },
+                    { primary: '' },
+
+                    { primary: '', secondary: 'KP MINUS', hold: '-' },
+                    { primary: '', hold: '[' },
+                    { primary: '', hold: ']' },
+                    { primary: '' },
+                    { primary: '&bootload', secondary: '' },
+                    { primary: '' },
+
+                    { primary: '', transparent: true },
+                    { primary: '' },
+                    { primary: '', accent: true },
+                    { primary: '', accent: true },
+                    { primary: '', transparent: true },
+                    { primary: '', transparent: true }
+                ],
+                info: {
+                    title: 'System Layer',
+                    description: 'System functions including F-keys, Bluetooth profiles (BT 0-2), and bootloader access. ZMK Studio Unlock available.'
+                }
+            }
+        };
+
+        let currentLayer = 'base';
+        let currentZoom = 100;
+        const MIN_ZOOM = 50;
+        const MAX_ZOOM = 200;
+        const ZOOM_STEP = 10;
+
+        // Zoom functions
+        let baseHeight = null;
+        let baseWidth = null;
+
+        function setZoom(level) {
+            currentZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, level));
+            const container = document.getElementById('keyboard-container');
+            const wrapper = document.getElementById('keyboard-wrapper');
+            const zoomLevelEl = document.getElementById('zoom-level');
+            const zoomSlider = document.getElementById('zoom-slider');
+            const zoomInBtn = document.getElementById('zoom-in');
+            const zoomOutBtn = document.getElementById('zoom-out');
+
+            // Store base dimensions on first call
+            if (baseHeight === null || baseWidth === null) {
+                baseHeight = container.offsetHeight;
+                baseWidth = container.offsetWidth;
+            }
+
+            // Apply zoom transform
+            container.style.transform = `scale(${currentZoom / 100})`;
+
+            // Adjust wrapper dimensions to accommodate scaled content
+            const scaledHeight = baseHeight * (currentZoom / 100);
+            const scaledWidth = baseWidth * (currentZoom / 100);
+            wrapper.style.minHeight = `${Math.max(400, scaledHeight + 40)}px`;
+            wrapper.style.minWidth = `${scaledWidth + 40}px`;
+
+            zoomLevelEl.textContent = `${currentZoom}%`;
+            zoomSlider.value = currentZoom;
+
+            // Update button states
+            zoomInBtn.disabled = currentZoom >= MAX_ZOOM;
+            zoomOutBtn.disabled = currentZoom <= MIN_ZOOM;
+        }
+
+        function zoomIn() {
+            setZoom(currentZoom + ZOOM_STEP);
+        }
+
+        function zoomOut() {
+            setZoom(currentZoom - ZOOM_STEP);
+        }
+
+        function resetZoom() {
+            setZoom(100);
+        }
+
+        function createKey(keyData, index) {
+            const key = document.createElement('div');
+            key.className = 'key';
+
+            if (keyData.transparent) {
+                key.classList.add('transparent');
+                return key;
+            }
+
+            if (keyData.accent) {
+                key.classList.add('accent');
+            }
+
+            if (keyData.highlight) {
+                key.classList.add('highlight');
+            }
+
+            // Primary label
+            const primary = document.createElement('div');
+            primary.className = 'primary';
+            primary.textContent = keyData.primary || '';
+            key.appendChild(primary);
+
+            // Secondary label
+            if (keyData.secondary) {
+                const secondary = document.createElement('div');
+                secondary.className = 'secondary';
+                secondary.textContent = keyData.secondary;
+                key.appendChild(secondary);
+            }
+
+            // Hold indicator
+            if (keyData.hold) {
+                const hold = document.createElement('div');
+                hold.className = 'hold-indicator';
+                hold.textContent = keyData.hold;
+                key.appendChild(hold);
+            }
+
+            // Add click feedback
+            key.addEventListener('mousedown', () => {
+                key.classList.add('pressed');
+            });
+            key.addEventListener('mouseup', () => {
+                key.classList.remove('pressed');
+            });
+            key.addEventListener('mouseleave', () => {
+                key.classList.remove('pressed');
+            });
+
+            return key;
+        }
+
+        function renderLayout(layer) {
+            const layout = layouts[layer];
+            const leftHalf = document.getElementById('left-half');
+            const rightHalf = document.getElementById('right-half');
+
+            // Reset base dimensions when layout changes
+            baseHeight = null;
+            baseWidth = null;
+
+            leftHalf.innerHTML = '';
+            rightHalf.innerHTML = '';
+
+            // Render left half (first 18 keys in grid)
+            layout.left.slice(0, 18).forEach((keyData, index) => {
+                leftHalf.appendChild(createKey(keyData, index));
+            });
+
+            // Left thumb cluster
+            const leftThumb = document.createElement('div');
+            leftThumb.className = 'thumb-cluster';
+            layout.left.slice(18).forEach((keyData, index) => {
+                const key = createKey(keyData, index);
+                if (!keyData.transparent) {
+                    key.classList.add('thumb-key');
+                    if (index >= 3) {
+                        key.classList.add('rotated-left');
+                    }
+                }
+                leftThumb.appendChild(key);
+            });
+            leftHalf.appendChild(leftThumb);
+
+            // Render right half
+            layout.right.slice(0, 18).forEach((keyData, index) => {
+                rightHalf.appendChild(createKey(keyData, index));
+            });
+
+            // Right thumb cluster
+            const rightThumb = document.createElement('div');
+            rightThumb.className = 'thumb-cluster right';
+            layout.right.slice(18).forEach((keyData, index) => {
+                const key = createKey(keyData, index);
+                if (!keyData.transparent) {
+                    key.classList.add('thumb-key');
+                    if (index < 3) {
+                        key.classList.add('rotated-right');
+                    }
+                }
+                rightThumb.appendChild(key);
+            });
+            rightHalf.appendChild(rightThumb);
+
+            // Update layer info
+            const layerInfo = document.getElementById('layer-info');
+            layerInfo.innerHTML = `
+                <h3>${layout.info.title}</h3>
+                <p>${layout.info.description}</p>
+            `;
+
+            // Re-apply zoom after layout renders
+            requestAnimationFrame(() => {
+                setZoom(currentZoom);
+            });
+        }
+
+        // Tab switching
+        document.querySelectorAll('.layer-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.layer-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentLayer = tab.dataset.layer;
+                renderLayout(currentLayer);
+            });
+        });
+
+        // Keyboard shortcuts for layer switching and zoom
+        document.addEventListener('keydown', (e) => {
+            // Layer switching: 1-4
+            if (e.key >= '1' && e.key <= '4' && !e.ctrlKey && !e.altKey) {
+                const layers = ['base', 'navnum', 'symbols', 'system'];
+                const index = parseInt(e.key) - 1;
+                document.querySelectorAll('.layer-tab').forEach(t => t.classList.remove('active'));
+                document.querySelector(`[data-layer="${layers[index]}"]`).classList.add('active');
+                currentLayer = layers[index];
+                renderLayout(currentLayer);
+            }
+
+            // Zoom shortcuts
+            if (e.key === '+' || e.key === '=') {
+                e.preventDefault();
+                zoomIn();
+            }
+            if (e.key === '-' || e.key === '_') {
+                e.preventDefault();
+                zoomOut();
+            }
+            if (e.key === '0' && !e.ctrlKey) {
+                e.preventDefault();
+                resetZoom();
+            }
+        });
+
+        // Zoom control event listeners
+        document.getElementById('zoom-in').addEventListener('click', zoomIn);
+        document.getElementById('zoom-out').addEventListener('click', zoomOut);
+        document.getElementById('zoom-reset').addEventListener('click', resetZoom);
+
+        document.getElementById('zoom-slider').addEventListener('input', (e) => {
+            setZoom(parseInt(e.target.value));
+        });
+
+        // Mouse wheel zoom (Ctrl + scroll)
+        document.getElementById('keyboard-wrapper').addEventListener('wheel', (e) => {
+            if (e.ctrlKey) {
+                e.preventDefault();
+                if (e.deltaY < 0) {
+                    zoomIn();
+                } else {
+                    zoomOut();
+                }
+            }
+        }, { passive: false });
+
+        // Initial render
+        renderLayout('base');
+        setZoom(100); // Initialize zoom state
+    </script>
+</body>
+</html>
